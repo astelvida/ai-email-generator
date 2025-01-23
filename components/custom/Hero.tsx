@@ -5,7 +5,7 @@ import SignInButton from "./SignInButton";
 
 function Hero() {
   return (
-    <div className="px-10 md:px-20 lg:px-40 flex flex-col items-center mt-24">
+    <div className="px-10 md:px-20 lg:px-40 flex flex-col items-center mt-24 gap-8">
       <h2 className="text-5xl font-bold text-center">
         AI Powered <span className="text-primary">Email Templates</span>
       </h2>
@@ -18,7 +18,7 @@ function Hero() {
         <SignInButton />
       </div>
 
-      <Image src="/window.svg" alt="Hero" width={1000} height={1000} />
+      <Image src="/landing.svg" alt="Hero" width={1000} height={1000} />
     </div>
   );
 }
