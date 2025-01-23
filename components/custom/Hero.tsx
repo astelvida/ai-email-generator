@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import SignInButton from "./SignInButton";
+
 function Hero() {
   return (
     <div className="px-10 md:px-20 lg:px-40 flex flex-col items-center mt-24">
@@ -12,10 +14,8 @@ function Hero() {
       </p>
 
       <div className="flex mt-4 gap-4">
-        <Button variant="outline" className="mt-4">
-          Try it out
-        </Button>
-        <Button className="mt-4">Get started</Button>
+        <Button variant="outline">Try it out</Button>
+        <SignInButton />
       </div>
 
       <Image src="/window.svg" alt="Hero" width={1000} height={1000} />
