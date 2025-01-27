@@ -1,7 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import SignInButton from "./SignInButton";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 function Hero() {
   return (
@@ -14,8 +15,19 @@ function Hero() {
       </p>
 
       <div className="flex mt-4 gap-4">
-        <Button variant="outline">Try it out</Button>
-        <SignInButton />
+        <Link href="/dashboard">
+          <Button variant="outline">Try it out</Button>
+        </Link>
+
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+
+        <SignedIn>
+          <Link href="/dashboard">
+            <Button>Dashboard</Button>
+          </Link>
+        </SignedIn>
       </div>
 
       <Image src="/landing.svg" alt="Hero" width={1000} height={1000} />

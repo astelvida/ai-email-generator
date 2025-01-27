@@ -1,9 +1,9 @@
-import Hero from "@/components/custom/Hero";
+import Hero from "@/app/Hero";
 
-export default function Home() {
+export default async function LandingPage() {
   return (
-    <div>
+    <main>
       <Hero />
-    </div>
+    </main>
   );
 }

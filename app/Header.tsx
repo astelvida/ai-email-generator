@@ -2,13 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import SignInButton from "./SignInButton";
-import { useUserDetails } from "@/contexts/user-details-context";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 function Header() {
-  const { userDetails } = useUserDetails();
   return (
     <div className="flex justify-between items-center p-4 shadow-sm px-10">
       <Image
@@ -20,24 +18,17 @@ function Header() {
         className="cursor-pointer"
       />
       <div>
-        {userDetails ? (
+        <SignedIn>
           <div className="flex items-center gap-2">
             <Link href="/dashboard" className="cursor-pointer">
               <Button>Dashboard</Button>
             </Link>
-            <Link href="/profile" className="cursor-pointer">
-              <Image
-                src={userDetails.picture}
-                alt="User"
-                width={32}
-                height={32}
-                className="rounded-full cursor-pointer"
-              />
-            </Link>
+            <UserButton />
           </div>
-        ) : (
+        </SignedIn>
+        <SignedOut>
           <SignInButton />
-        )}
+        </SignedOut>
       </div>
     </div>
   );
