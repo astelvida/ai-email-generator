@@ -17,8 +17,6 @@ export default async function DashboardPage() {
 
   const templatesForUser = await db.select().from(templates).where(eq(templates.userId, user?.id));
 
-  console.log(templatesForUser);
-
   const sortedTemplates = templatesForUser.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });

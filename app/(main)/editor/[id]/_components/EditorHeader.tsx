@@ -6,11 +6,11 @@ import { MonitorIcon, SmartphoneIcon } from "lucide-react";
 import React from "react";
 
 export function EditorHeader() {
-  const { toggleView } = useToggleViewContext();
+  const { toggleView, view } = useToggleViewContext();
 
   return (
     <div className="flex justify-between items-center">
-      <ToggleGroup type="single" defaultValue="desktop" onValueChange={toggleView}>
+      <ToggleGroup type="single" value={view} onValueChange={toggleView}>
         <ToggleGroupItem value="mobile" aria-label="Toggle mobile">
           <SmartphoneIcon className="w-4 h-4" />
           Mobile
