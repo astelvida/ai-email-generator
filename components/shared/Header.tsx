@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
-function Header() {
+export function Header() {
   return (
     <div className="flex justify-between items-center p-4 shadow-sm px-10">
       <Image
@@ -33,5 +33,3 @@ function Header() {
     </div>
   );
 }
-
-export default Header;

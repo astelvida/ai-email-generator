@@ -4,16 +4,14 @@ import { Template } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { LayoutGrid } from "./LayoutGrid";
-import { useToggleViewContext } from "@/app/use-toogle-view";
+import { useToggleView, View } from "@/components/contexts/ToggleViewContext";
 
 interface CanvasProps {
   template: Template;
 }
 
 export function Canvas({ template }: CanvasProps) {
-  const { view } = useToggleViewContext();
-  const isMobile = view === "mobile";
-
+  const { view } = useToggleView();
   const [activeLayout, setActiveLayout] = useState<string | null>(null);
   const [elements, setElements] = useState<Record<string, any>>({});
 
@@ -28,16 +26,25 @@ export function Canvas({ template }: CanvasProps) {
   };
 
   return (
-    <div className="h-full flex items-center justify-center">
+    <div className="h-full flex  justify-center">
       <div
         className={cn(
-          "bg-white rounded-lg shadow-lg transition-all duration-200",
-          isMobile ? "w-[375px] h-[667px]" : "w-[768px] h-[1024px]"
+          "border-2 border-dashed border-gray-300 rounded-lg text-gray-500 w-full",
+          // TODO: replace with getLayoutClass
+          view === "mobile"
+            ? "max-w-[375px] h-[667px]"
+            : view === "tablet"
+            ? "max-w-[768px]"
+            : ""
         )}
       >
-        <div className="p-4">
+        <div className="p-4 w-full h-full overflow-auto">
           {activeLayout ? (
-            <LayoutGrid layout={activeLayout} onDrop={handleDrop} elements={elements} />
+            <LayoutGrid
+              layout={activeLayout}
+              onDrop={handleDrop}
+              elements={elements}
+            />
           ) : (
             <div
               className="h-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-500"

@@ -1,4 +1,4 @@
-import Hero from "@/app/(main)/_components/Hero";
+import { Hero } from "@/components/shared/Hero";
 
 export default async function LandingPage() {
   return (

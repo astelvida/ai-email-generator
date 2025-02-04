@@ -4,14 +4,15 @@ import Image from "next/image";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-function Hero() {
+export function Hero() {
   return (
     <div className="px-10 md:px-20 lg:px-40 flex flex-col items-center mt-24 gap-8">
       <h2 className="text-5xl font-bold text-center">
         AI Powered <span className="text-primary">Email Templates</span>
       </h2>
       <p className="text-lg text-center mt-4">
-        Generate email templates in seconds with our AI-powered email template generator.
+        Generate email templates in seconds with our AI-powered email template
+        generator.
       </p>
 
       <div className="flex mt-4 gap-4">
@@ -34,5 +35,3 @@ function Hero() {
     </div>
   );
 }
-
-export default Hero;
