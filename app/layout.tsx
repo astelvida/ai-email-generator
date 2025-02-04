@@ -28,16 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClerkProvider>
           <ToggleViewProvider>
             <DragAndDropProvider>
-              <div className="flex flex-col min-h-screen">
-                <Header />
-                {children}
-              </div>
+              <div>{children}</div>
             </DragAndDropProvider>
           </ToggleViewProvider>
         </ClerkProvider>

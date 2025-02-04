@@ -24,21 +24,21 @@ export default async function EditorPage(props: EditorPageProps) {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-auto">
       {/* Top Header with Desktop/Mobile Toggle */}
       <div className="border-b p-4">
         <EditorHeader />
       </div>
 
       {/* Main Editor Area */}
-      <div className="flex-1 flex">
+      <div className="grid grid-cols-5">
         {/* Left Sidebar - Elements */}
-        <div className="w-64 border-r bg-background p-4">
+        <div className="overflow-auto p-5 shadow-sm">
           <ElementsSidebar />
         </div>
 
         {/* Main Canvas */}
-        <div className="flex-1 bg-muted p-8">
+        <div className="col-span-3 bg-gray-50">
           <Canvas template={template} />
         </div>
 
