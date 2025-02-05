@@ -1,5 +1,6 @@
-import { Hero } from "@/components/shared/Hero";
-import { Header } from "@/components/shared/Header";
+import { Hero } from "@/app/Hero";
+import { Header } from "@/app/Header";
+
 export default async function LandingPage() {
   return (
     <main>

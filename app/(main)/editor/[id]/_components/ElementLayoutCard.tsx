@@ -1,20 +1,16 @@
-export function ElementLayoutCard({ layout }: { layout: LayoutConfigType }) {
+import { LayoutConfig, ElementConfig } from "@/lib/types/config.types";
+
+export function ElementLayoutCard({
+  layout,
+}: {
+  layout: LayoutConfig | ElementConfig;
+}) {
   return (
-    <div
-      key={layout.label}
-      className="flex flex-col items-center justify-center 
-                border-[1.5px]  border-dashed rounded-xl p-3 border-gray-300
-                 group hover:shadow-md hover:border-indigo-600 cursor-pointer"
-      draggable
-      onClick={() => {
-        console.log(layout.label);
-      }}
-    >
-      <layout.icon
-        className="h-9 w-9 p-2 bg-gray-100  border-0 rounded-full
-               group-hover:text-indigo-600 group-hover:bg-indigo-100/50"
-      />
-      <span className="text-sm group-hover:text-indigo-600">{layout.label}</span>
+    <div className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed border-gray-300 p-3 hover:border-indigo-600 hover:shadow-md">
+      <layout.icon className="h-9 w-9 rounded-full border-0 bg-gray-100 p-2 group-hover:bg-indigo-100/50 group-hover:text-indigo-600" />
+      <span className="text-sm group-hover:text-indigo-600">
+        {layout.label}
+      </span>
     </div>
   );
 }

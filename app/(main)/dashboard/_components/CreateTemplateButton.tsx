@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Loader2, PlusIcon } from "lucide-react";
-import { createTemplate } from "@/app/actions";
+import { createTemplate } from "@/app/(main)/actions";
 import { useTransition } from "react";
 
 export function CreateTemplateButton() {

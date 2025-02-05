@@ -1,20 +1,15 @@
 import {
-  Columns2,
-  Facebook,
   Frame,
-  Framer,
   Image,
-  Link2,
   PanelTop,
-  Projector,
   RectangleEllipsis,
   SquareSplitVertical,
-  Text,
   TextSelectionIcon,
   Twitter,
 } from "lucide-react";
+import { ElementConfig } from "../types/config.types";
 
-export default [
+const elementList: ElementConfig[] = [
   {
     icon: RectangleEllipsis,
     label: "Button",
@@ -176,3 +171,5 @@ export default [
     },
   },
 ];
+
+export default elementList;

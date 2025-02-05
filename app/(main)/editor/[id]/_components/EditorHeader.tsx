@@ -1,18 +1,12 @@
 "use client";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  MonitorIcon,
-  SaveIcon,
-  SmartphoneIcon,
-  TabletIcon,
-  TrashIcon,
-} from "lucide-react";
+import { MonitorIcon, SaveIcon, SmartphoneIcon, TabletIcon, TrashIcon } from "lucide-react";
 import React, { useState } from "react";
-import { useToggleView } from "@/components/contexts/ToggleViewContext";
+import { useToggleView } from "@/providers/ToggleViewProvider";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { deleteTemplate, updateTemplate } from "@/app/actions";
+import { deleteTemplate, updateTemplate } from "@/app/(main)/actions";
 import { useParams } from "next/navigation";
 import { Label } from "@/components/ui/label";
 
@@ -52,12 +46,7 @@ export function EditorHeader() {
 
       <div className="flex items-center gap-2">
         <Label htmlFor="title">Title</Label>
-        <Input
-          id="title"
-          placeholder="Title..."
-          value={title}
-          onChange={handleTitleChange}
-        />
+        <Input id="title" placeholder="Title..." value={title} onChange={handleTitleChange} />
       </div>
 
       <ToggleGroup type="single" value={view} onValueChange={setView}>

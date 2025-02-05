@@ -1,6 +1,7 @@
-import { Columns, Columns2, Columns3, Columns4, RectangleHorizontal } from "lucide-react";
+import { Columns2, Columns3, Columns4, RectangleHorizontal } from "lucide-react";
+import { LayoutConfig } from "../types/config.types";
 
-export default [
+const layoutConfig: LayoutConfig[] = [
   {
     label: "Column",
     type: "column",
@@ -26,3 +27,5 @@ export default [
     icon: Columns4,
   },
 ];
+
+export default layoutConfig;

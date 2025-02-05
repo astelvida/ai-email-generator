@@ -1,64 +1,50 @@
 "use client";
 
-import { Template } from "@/lib/db/schema";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { LayoutGrid } from "./LayoutGrid";
-import { useToggleView, View } from "@/components/contexts/ToggleViewContext";
+import { useEffect, useRef, useState } from "react";
+import { useToggleView } from "@/providers/ToggleViewProvider";
+import { useTemplate } from "@/providers/TemplateProvider";
+import { useDragAndDrop } from "@/providers/DragAndDropProvider";
+import { ColumnLayout } from "./ColumnLayout";
 
-interface CanvasProps {
-  template: Template;
-}
-
-export function Canvas({ template }: CanvasProps) {
+export function Canvas() {
   const { view } = useToggleView();
-  const [activeLayout, setActiveLayout] = useState<string | null>(null);
-  const [elements, setElements] = useState<Record<string, any>>({});
+  const [isDragging, setIsDragging] = useState(false);
+  const { template, setTemplate } = useTemplate();
+  const { dragElementLayout } = useDragAndDrop();
+  const canvasRef = useRef<HTMLDivElement>(null);
 
-  const handleDrop = (e: React.DragEvent, cellId: string) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    const elementType = e.dataTransfer.getData("element");
+    setIsDragging(true);
+  };
 
-    setElements((prev) => ({
-      ...prev,
-      [cellId]: { type: elementType, content: "" },
-    }));
+  const handleDrop = (e: React.DragEvent) => {
+    // e.preventDefault();
+    setIsDragging(false);
+    setTemplate((prev) => {
+      return [...prev, dragElementLayout?.dragLayout];
+    });
   };
 
   return (
-    <div className="h-full flex  justify-center">
+    <div className="mt-10 flex justify-center">
       <div
-        className={cn(
-          "border-2 border-dashed border-gray-300 rounded-lg text-gray-500 w-full",
-          // TODO: replace with getLayoutClass
-          view === "mobile"
-            ? "max-w-[375px] h-[667px]"
-            : view === "tablet"
-            ? "max-w-[768px]"
-            : ""
-        )}
+        className={`w-full p-6 ${view == "desktop" ? "max-w-2xl" : "max-w-md"} ${isDragging ? "bg-purple-100" : "bg-white"} `}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        ref={canvasRef}
       >
-        <div className="p-4 w-full h-full overflow-auto">
-          {activeLayout ? (
-            <LayoutGrid
-              layout={activeLayout}
-              onDrop={handleDrop}
-              elements={elements}
-            />
-          ) : (
-            <div
-              className="h-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-500"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                const layoutType = e.dataTransfer.getData("layout");
-                setActiveLayout(layoutType);
-              }}
-            >
-              Drag a layout here to start
-            </div>
-          )}
-        </div>
+        {template.length ? (
+          template.map((layout) => {
+            if (layout.type === "column") {
+              return <ColumnLayout key={layout.id} layout={layout} />;
+            }
+          })
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <p>Drag a layout here to start</p>
+          </div>
+        )}
       </div>
     </div>
   );
