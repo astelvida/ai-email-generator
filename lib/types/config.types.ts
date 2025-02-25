@@ -45,7 +45,6 @@ export interface ElementConfig {
   label: string;
   content?: string;
   url?: string;
-  textarea?: string;
   imageUrl?: string;
   alt?: string;
   style: ElementStyle | ImageElementStyle;

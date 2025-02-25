@@ -81,7 +81,11 @@ export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
             onDrop={() => handleDrop()}
             onClick={() => setSelectedElement({ layout: layout, index: index })}
           >
-            {getElementComponent(layout?.[index]) || "Drag an element here"}
+            {getElementComponent(
+              selectedElement?.layout.id == layout.id && selectedElement.index == index
+                ? selectedElement?.layout[selectedElement?.index]
+                : layout?.[index],
+            ) || "Drag an element here"}
           </div>
         ))}
       </div>

@@ -4,13 +4,13 @@ import { ElementStyle, ElementOuterStyle } from "@/lib/types/config.types";
 interface TextComponentProps {
   style: ElementStyle;
   outerStyle?: ElementOuterStyle;
-  textarea?: string;
+  content?: string;
 }
 
-function TextComponent({ style, outerStyle = {}, textarea = "" }: TextComponentProps) {
+function TextComponent({ style, outerStyle = {}, content = "" }: TextComponentProps) {
   return (
     <div style={outerStyle}>
-      <h2 style={style}>{textarea}</h2>
+      <h2 style={style}>{content}</h2>
     </div>
   );
 }

@@ -14,7 +14,7 @@ export function ElementsSidebar() {
     setDragElementLayout({
       dragLayout: {
         ...layout,
-        id: Date.now(),
+        id: Date.now().toString(),
       },
     });
   };
@@ -24,7 +24,7 @@ export function ElementsSidebar() {
     setDragElementLayout({
       dragElement: {
         ...element,
-        id: Date.now(),
+        id: Date.now().toString(),
       },
     });
   };

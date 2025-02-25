@@ -37,7 +37,7 @@ const elementList: ElementConfig[] = [
     icon: TextSelectionIcon,
     type: "Text",
     label: "Text",
-    textarea: "Sample Text",
+    content: "Sample Text",
     style: {
       backgroundColor: "#fff",
       color: "#000000",

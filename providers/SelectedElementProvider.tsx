@@ -1,5 +1,5 @@
 "use client";
-
+import { LayoutConfig } from "@/lib/types/config.types";
 import {
   createContext,
   useContext,
@@ -9,11 +9,16 @@ import {
   SetStateAction,
   Dispatch,
 } from "react";
+import { useEmailTemplate } from "./EmailTemplateProvider";
 
+interface SelectedElement {
+  layout: LayoutConfig;
+  index: number;
+}
 // Define the shape of your context state
 type SelectedElementContextType = {
-  selectedElement: HTMLElement | null;
-  setSelectedElement: Dispatch<SetStateAction<HTMLElement | null>>;
+  selectedElement: SelectedElement | null;
+  setSelectedElement: Dispatch<SetStateAction<SelectedElement | null>>;
 };
 
 // Create the context with an undefined default value
@@ -21,11 +26,13 @@ const SelectedElementContext = createContext<SelectedElementContextType | undefi
 
 // Create a provider component
 export const SelectedElementProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null);
+  const { emailTemplate, setEmailTemplate } = useEmailTemplate();
+  const [selectedElement, setSelectedElement] = useState<SelectedElement | null>(null);
 
   useEffect(() => {
-    console.log("selectedElement", selectedElement);
-  }, [selectedElement]);
+    // console.log("selectedElement", selectedElement);
+    // localStorage.setItem("emailTemplate", JSON.stringify(emailTemplate));
+  }, [selectedElement, emailTemplate]);
 
   return (
     <SelectedElementContext.Provider value={{ selectedElement, setSelectedElement }}>
