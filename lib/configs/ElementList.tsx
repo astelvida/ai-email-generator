@@ -1,11 +1,11 @@
 import {
-  Frame,
-  Image,
-  PanelTop,
+  FrameIcon,
+  ImageIcon,
+  PanelTopIcon,
   RectangleEllipsis,
-  SquareSplitVertical,
+  SquareSplitVerticalIcon,
   TextSelectionIcon,
-  Twitter,
+  TwitterIcon,
 } from "lucide-react";
 import { ElementConfig } from "../types/config.types";
 
@@ -25,7 +25,6 @@ const elementList: ElementConfig[] = [
       fontSize: "16px",
       borderRadius: "0px",
       fontWeight: "normal",
-      objectFit: "contain",
     },
     outerStyle: {
       display: "flex",
@@ -54,10 +53,10 @@ const elementList: ElementConfig[] = [
     },
   },
   {
-    icon: Image,
+    icon: ImageIcon,
     type: "Image",
     label: "Image",
-    imageUrl: "/image.png",
+    imageUrl: "/default-image.png",
     alt: "Image",
     url: "#",
     style: {
@@ -77,7 +76,7 @@ const elementList: ElementConfig[] = [
     },
   },
   {
-    icon: Frame,
+    icon: FrameIcon,
     type: "Logo",
     label: "Logo",
     imageUrl: "/logo.svg",
@@ -98,7 +97,7 @@ const elementList: ElementConfig[] = [
     },
   },
   {
-    icon: PanelTop,
+    icon: PanelTopIcon,
     type: "LogoHeader",
     label: "Logo Header",
     imageUrl: "/logo.svg",
@@ -119,7 +118,7 @@ const elementList: ElementConfig[] = [
     },
   },
   {
-    icon: SquareSplitVertical,
+    icon: SquareSplitVerticalIcon,
     type: "Divider",
     label: "Divider",
     content: "",
@@ -131,7 +130,7 @@ const elementList: ElementConfig[] = [
   },
   {
     type: "SocialIcons",
-    icon: Twitter,
+    icon: TwitterIcon,
     label: "Social Icons",
     socialIcons: [
       {

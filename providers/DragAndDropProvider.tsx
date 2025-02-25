@@ -1,8 +1,12 @@
 "use client";
-import { ElementConfig, LayoutConfig } from "@/lib/types/config.types";
-import { createContext, useContext, useEffect, useState } from "react";
 
-export type DragElementLayout = LayoutConfig | ElementConfig;
+import { ElementConfig, LayoutConfig } from "@/lib/types/config.types";
+import { createContext, useContext, useState } from "react";
+
+export type DragElementLayout = {
+  dragLayout?: LayoutConfig;
+  dragElement?: ElementConfig;
+};
 
 export interface DragAndDropContextType {
   dragElementLayout: DragElementLayout | null;
@@ -13,10 +17,6 @@ export const DragAndDropContext = createContext<DragAndDropContextType | null>(n
 
 export const DragAndDropProvider = ({ children }: { children: React.ReactNode }) => {
   const [dragElementLayout, setDragElementLayout] = useState<DragElementLayout | null>(null);
-
-  // useEffect(() => {
-  //   console.log(dragElementLayout);
-  // }, [dragElementLayout]);
 
   return (
     <DragAndDropContext.Provider value={{ dragElementLayout, setDragElementLayout }}>

@@ -24,7 +24,7 @@ export default async function EditorPage(props: EditorPageProps) {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-auto">
+    <div className="flex h-screen flex-col overflow-auto">
       {/* Top Header with Desktop/Mobile Toggle */}
       <div className="border-b p-4">
         <EditorHeader />

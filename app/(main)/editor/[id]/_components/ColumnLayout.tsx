@@ -1,16 +1,23 @@
 "use client";
 
-import { ElementWithId, LayoutWithId } from "@/lib/types/config.types";
+import { ElementConfig, LayoutWithId } from "@/lib/types/config.types";
 import { useDragAndDrop } from "@/providers/DragAndDropProvider";
-import { useTemplate } from "@/providers/TemplateProvider";
+import { useEmailTemplate } from "@/providers/EmailTemplateProvider";
 import { useState } from "react";
+import ButtonComponent from "./elements/ButtonComponent";
+import TextComponent from "./elements/TextComponent";
+import ImageComponent from "./elements/ImageComponent";
+import DividerComponent from "./elements/DividerComponent";
+import LogoComponent from "./elements/LogoComponent";
+import SocialIcons from "./elements/SocialIcons";
+import LogoHeader from "./elements/LogoHeader";
 
 export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
   const [dragOver, setDragOver] = useState<{
     index: number;
     columnId: string;
   } | null>(null);
-  const { template, setTemplate } = useTemplate();
+  const { emailTemplate, setEmailTemplate } = useEmailTemplate();
   const { dragElementLayout } = useDragAndDrop();
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
@@ -22,18 +29,36 @@ export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
   };
 
   const handleDrop = () => {
-    const index = dragOver.index;
-    setTemplate((prevItem) =>
+    const index = dragOver?.index;
+    if (index === undefined) return;
+    setEmailTemplate((prevItem) =>
       prevItem?.map((col) =>
         col.id === layout?.id ? { ...col, [index]: dragElementLayout?.dragElement } : col,
       ),
     );
-    console.log(template);
+    console.log(emailTemplate);
     setDragOver(null);
   };
 
-  const getElementComponent = (element: ElementWithId) => {
-    return element?.type;
+  const getElementComponent = (element: ElementConfig) => {
+    switch (element?.type) {
+      case "Button":
+        return <ButtonComponent {...element} />;
+      case "Text":
+        return <TextComponent {...element} />;
+      case "Image":
+        return <ImageComponent {...element} />;
+      case "Divider":
+        return <DividerComponent {...element} />;
+      case "Logo":
+        return <LogoComponent {...element} />;
+      case "LogoHeader":
+        return <LogoHeader {...element} />;
+      case "SocialIcons":
+        return <SocialIcons {...element} />;
+      default:
+        return null;
+    }
   };
 
   return (

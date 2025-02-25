@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useToggleView } from "@/providers/ToggleViewProvider";
-import { useTemplate } from "@/providers/TemplateProvider";
+import { useEmailTemplate } from "@/providers/EmailTemplateProvider";
 import { useDragAndDrop } from "@/providers/DragAndDropProvider";
 import { ColumnLayout } from "./ColumnLayout";
-import { LayoutConfig, LayoutWithId } from "@/lib/types/config.types";
+import { LayoutWithId } from "@/lib/types/config.types";
 
 export function Canvas() {
   const { view } = useToggleView();
   const [isDragging, setIsDragging] = useState(false);
-  const { template, setTemplate } = useTemplate();
+  const { emailTemplate: template, setEmailTemplate: setTemplate } = useEmailTemplate();
   const { dragElementLayout } = useDragAndDrop();
   const canvasRef = useRef<HTMLDivElement>(null);
 

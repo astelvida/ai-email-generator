@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
 // Types for ElementList.tsx
-export interface Style {
+export interface ElementStyle {
   backgroundColor?: string;
   color?: string;
   padding?: string;
@@ -11,12 +11,15 @@ export interface Style {
   fontSize?: string;
   borderRadius?: string;
   fontWeight?: string | number;
-  objectFit?: string;
   margin?: string;
   textTransform?: "uppercase" | "lowercase" | "capitalize" | "none";
 }
 
-export interface OuterStyle {
+export interface ImageElementStyle extends ElementStyle {
+  objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
+}
+
+export interface ElementOuterStyle {
   display?: string;
   justifyContent?: string;
   alignItems?: string;
@@ -31,6 +34,7 @@ export interface SocialIcon {
 }
 
 export interface ElementConfig {
+  id?: string;
   icon: LucideIcon;
   type: "Button" | "Text" | "Image" | "Logo" | "LogoHeader" | "Divider" | "SocialIcons";
   label: string;
@@ -39,14 +43,15 @@ export interface ElementConfig {
   textarea?: string;
   imageUrl?: string;
   alt?: string;
-  style: Style;
-  outerStyle?: OuterStyle;
+  style: ElementStyle | ImageElementStyle;
+  outerStyle?: ElementOuterStyle;
   socialIcons?: SocialIcon[];
   options?: SocialIcon[];
 }
 
 // Types for Layout.tsx
 export interface LayoutConfig {
+  id?: string;
   label: string;
   type: "column";
   numOfCol: 1 | 2 | 3 | 4;
