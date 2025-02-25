@@ -32,14 +32,7 @@ export interface SocialIcon {
 
 export interface ElementConfig {
   icon: LucideIcon;
-  type:
-    | "Button"
-    | "Text"
-    | "Image"
-    | "Logo"
-    | "LogoHeader"
-    | "Divider"
-    | "SocialIcons";
+  type: "Button" | "Text" | "Image" | "Logo" | "LogoHeader" | "Divider" | "SocialIcons";
   label: string;
   content?: string;
   url?: string;
@@ -58,4 +51,12 @@ export interface LayoutConfig {
   type: "column";
   numOfCol: 1 | 2 | 3 | 4;
   icon: LucideIcon;
+}
+
+export interface LayoutWithId extends LayoutConfig {
+  id: string;
+}
+
+export interface ElementWithId extends ElementConfig {
+  id: string;
 }

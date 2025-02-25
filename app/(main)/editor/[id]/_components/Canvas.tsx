@@ -5,6 +5,7 @@ import { useToggleView } from "@/providers/ToggleViewProvider";
 import { useTemplate } from "@/providers/TemplateProvider";
 import { useDragAndDrop } from "@/providers/DragAndDropProvider";
 import { ColumnLayout } from "./ColumnLayout";
+import { LayoutConfig, LayoutWithId } from "@/lib/types/config.types";
 
 export function Canvas() {
   const { view } = useToggleView();
@@ -18,12 +19,20 @@ export function Canvas() {
     setIsDragging(true);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    // e.preventDefault();
+  const handleDrop = () => {
     setIsDragging(false);
-    setTemplate((prev) => {
-      return [...prev, dragElementLayout?.dragLayout];
-    });
+
+    if (dragElementLayout?.dragLayout) {
+      setTemplate((prev) => {
+        return [...prev, dragElementLayout?.dragLayout];
+      });
+    }
+  };
+
+  const getLayoutComponent = (layout: LayoutWithId) => {
+    if (layout.type === "column") {
+      return <ColumnLayout layout={layout} />;
+    }
   };
 
   return (
@@ -35,11 +44,7 @@ export function Canvas() {
         ref={canvasRef}
       >
         {template.length ? (
-          template.map((layout) => {
-            if (layout.type === "column") {
-              return <ColumnLayout key={layout.id} layout={layout} />;
-            }
-          })
+          template.map((layout, index) => <div key={index}>{getLayoutComponent(layout)}</div>)
         ) : (
           <div className="flex h-full items-center justify-center">
             <p>Drag a layout here to start</p>

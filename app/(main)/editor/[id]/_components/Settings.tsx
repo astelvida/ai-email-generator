@@ -17,7 +17,7 @@ export function Settings() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold mb-4">Settings</h2>
+        <h2 className="mb-4 text-lg font-semibold">Settings</h2>
 
         <div className="space-y-4">
           <div className="space-y-2">

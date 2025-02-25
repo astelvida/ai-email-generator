@@ -39,6 +39,7 @@ export async function updateTemplate(templateId: string, latestTemplate: Partial
     await db.update(templates).set(latestTemplate).where(eq(templates.id, templateId));
 
     revalidatePath("/dashboard");
+    revalidatePath(`/editor/${templateId}`);
     // redirect(`/editor/${templateId}`);
   } catch (error) {
     console.error(error);
