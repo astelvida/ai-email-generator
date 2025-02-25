@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ToggleViewProvider } from "@/providers/ToggleViewProvider";
 import { DragAndDropProvider } from "@/providers/DragAndDropProvider";
 import { EmailTemplateProvider } from "@/providers/EmailTemplateProvider";
 import { SelectedElementProvider } from "@/providers/SelectedElementProvider";
@@ -31,7 +30,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClerkProvider>
-          <ToggleViewProvider>
             <DragAndDropProvider>
               <EmailTemplateProvider>
                 <SelectedElementProvider>
@@ -39,7 +37,6 @@ export default function RootLayout({
                 </SelectedElementProvider>
               </EmailTemplateProvider>
             </DragAndDropProvider>
-          </ToggleViewProvider>
         </ClerkProvider>
       </body>
     </html>
