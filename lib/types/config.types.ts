@@ -33,6 +33,11 @@ export interface SocialIcon {
   url: string;
 }
 
+export interface SocialIconStyle extends ElementStyle {
+  socialIcons: SocialIcon[];
+  options: SocialIcon[];
+}
+
 export interface ElementConfig {
   id?: string;
   icon: LucideIcon;
@@ -45,8 +50,6 @@ export interface ElementConfig {
   alt?: string;
   style: ElementStyle | ImageElementStyle;
   outerStyle?: ElementOuterStyle;
-  socialIcons?: SocialIcon[];
-  options?: SocialIcon[];
 }
 
 // Types for Layout.tsx

@@ -1,12 +1,12 @@
 import React from "react";
-import { ElementOuterStyle, ImageElementStyle, SocialIcon } from "@/lib/types/config.types";
+import { ElementOuterStyle, SocialIcon, SocialIconStyle } from "@/lib/types/config.types";
 
 interface SocialIconsProps {
   socialIcons: SocialIcon[];
-  style: ImageElementStyle;
-  outerStyle: ElementOuterStyle;
+  style: SocialIconStyle;
+  outerStyle?: ElementOuterStyle;
 }
-function SocialIcons({ socialIcons, style, outerStyle }: SocialIconsProps) {
+function SocialIcons({ socialIcons = [], style, outerStyle = {} }: SocialIconsProps) {
   return (
     <div style={outerStyle}>
       {socialIcons.map((item, index) => (

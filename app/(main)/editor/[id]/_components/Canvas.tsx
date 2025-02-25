@@ -10,7 +10,7 @@ import { LayoutWithId } from "@/lib/types/config.types";
 export function Canvas() {
   const { view } = useToggleView();
   const [isDragging, setIsDragging] = useState(false);
-  const { emailTemplate: template, setEmailTemplate: setTemplate } = useEmailTemplate();
+  const { emailTemplate, setEmailTemplate } = useEmailTemplate();
   const { dragElementLayout } = useDragAndDrop();
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +23,7 @@ export function Canvas() {
     setIsDragging(false);
 
     if (dragElementLayout?.dragLayout) {
-      setTemplate((prev) => {
+      setEmailTemplate((prev) => {
         return [...prev, dragElementLayout?.dragLayout];
       });
     }
@@ -43,8 +43,8 @@ export function Canvas() {
         onDrop={handleDrop}
         ref={canvasRef}
       >
-        {template.length ? (
-          template.map((layout, index) => <div key={index}>{getLayoutComponent(layout)}</div>)
+        {emailTemplate.length ? (
+          emailTemplate.map((layout, index) => <div key={index}>{getLayoutComponent(layout)}</div>)
         ) : (
           <div className="flex h-full items-center justify-center">
             <p>Drag a layout here to start</p>

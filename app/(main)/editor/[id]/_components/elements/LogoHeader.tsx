@@ -3,8 +3,8 @@ import { ElementOuterStyle, ImageElementStyle } from "@/lib/types/config.types";
 
 interface LogoHeaderProps {
   style: ImageElementStyle;
-  imageUrl: string;
-  outerStyle: ElementOuterStyle;
+  imageUrl?: string;
+  outerStyle?: ElementOuterStyle;
 }
 
 function LogoHeader({ style, imageUrl = "/default-image.png", outerStyle = {} }: LogoHeaderProps) {

@@ -11,6 +11,7 @@ import DividerComponent from "./elements/DividerComponent";
 import LogoComponent from "./elements/LogoComponent";
 import SocialIcons from "./elements/SocialIcons";
 import LogoHeader from "./elements/LogoHeader";
+import { useSelectedElement } from "@/providers/SelectedElementProvider";
 
 export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
   const [dragOver, setDragOver] = useState<{
@@ -19,6 +20,7 @@ export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
   } | null>(null);
   const { emailTemplate, setEmailTemplate } = useEmailTemplate();
   const { dragElementLayout } = useDragAndDrop();
+  const { selectedElement, setSelectedElement } = useSelectedElement();
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
@@ -32,11 +34,10 @@ export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
     const index = dragOver?.index;
     if (index === undefined) return;
     setEmailTemplate((prevItem) =>
-      prevItem?.map((col) =>
+      prevItem.map((col) =>
         col.id === layout?.id ? { ...col, [index]: dragElementLayout?.dragElement } : col,
       ),
     );
-    console.log(emailTemplate);
     setDragOver(null);
   };
 
@@ -75,9 +76,10 @@ export function ColumnLayout({ layout }: { layout: LayoutWithId }) {
             key={index}
             className={`flex items-center justify-center border border-dashed border-gray-300 bg-gray-200 p-2 ${
               dragOver?.index === index && dragOver?.columnId === layout.id ? "bg-red-200" : ""
-            }`}
+            } ${selectedElement?.layout.id == layout.id && selectedElement.index == index ? "solid border-2 border-green-500" : ""} `}
             onDragOver={(e) => handleDragOver(e, index)}
             onDrop={() => handleDrop()}
+            onClick={() => setSelectedElement({ layout: layout, index: index })}
           >
             {getElementComponent(layout?.[index]) || "Drag an element here"}
           </div>

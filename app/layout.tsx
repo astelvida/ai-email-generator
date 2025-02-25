@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ToggleViewProvider } from "@/providers/ToggleViewProvider";
 import { DragAndDropProvider } from "@/providers/DragAndDropProvider";
 import { EmailTemplateProvider } from "@/providers/EmailTemplateProvider";
+import { SelectedElementProvider } from "@/providers/SelectedElementProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
           <ToggleViewProvider>
             <DragAndDropProvider>
               <EmailTemplateProvider>
-                <div>{children}</div>
+                <SelectedElementProvider>
+                  <div>{children}</div>
+                </SelectedElementProvider>
               </EmailTemplateProvider>
             </DragAndDropProvider>
           </ToggleViewProvider>

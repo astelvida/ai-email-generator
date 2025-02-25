@@ -1,12 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { LayoutConfig, ElementConfig } from "@/lib/types/config.types";
 
-type EmailTemplate = unknown;
+type EmailTemplate = LayoutConfig | ElementConfig;
 
 export interface EmailTemplateContextType {
   emailTemplate: EmailTemplate[];
-  setEmailTemplate: (emailTemplate: EmailTemplate[]) => void;
+  setEmailTemplate: Dispatch<SetStateAction<EmailTemplate[]>>;
 }
 
 export const EmailTemplateContext = createContext<EmailTemplateContextType | null>(null);
@@ -16,9 +17,9 @@ export const EmailTemplateProvider = ({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const template = localStorage.getItem("emailTemplate");
-      if (template) {
-        setEmailTemplate(JSON.parse(template));
+      const storedEmailTemplate = localStorage.getItem("emailTemplate");
+      if (storedEmailTemplate) {
+        setEmailTemplate(JSON.parse(storedEmailTemplate));
       }
     }
   }, []);
@@ -39,7 +40,7 @@ export const EmailTemplateProvider = ({ children }: { children: React.ReactNode 
 export const useEmailTemplate = () => {
   const context = useContext(EmailTemplateContext);
   if (!context) {
-    throw new Error("useTemplate must be used within a TemplateProvider");
+    throw new Error("useEmailTemplate must be used within a EmailTemplateProvider");
   }
   return context;
 };
