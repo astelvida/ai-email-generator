@@ -1,51 +1,34 @@
 "use client";
 
 import { Droppable } from "@/components/Droppable";
-import { ElementConfig } from "@/lib/types";
-import ButtonComponent from "../../../../components/elements/ButtonComponent";
-import TextComponent from "../../../../components/elements/TextComponent";
-import ImageComponent from "../../../../components/elements/ImageComponent";
-import DividerComponent from "../../../../components/elements/DividerComponent";
+import { BuilderElement, ElementConfig } from "@/lib/types";
 
-const getElementComponent = (element: ElementConfig) => {
-  switch (element?.type) {
-    case "button":
-      return <ButtonComponent {...element} />;
-    case "text":
-      return <TextComponent {...element} />;
-    case "image":
-      return <ImageComponent {...element} />;
-    case "divider":
-      return <DividerComponent {...element} />;
-    default:
-      return null;
-  }
+import { cn } from "@/lib/utils";
+import { LayoutConfig } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { ListStartIcon, PlusIcon } from "lucide-react";
+import { getElementComponent } from "./ElementRenderer";
+
+const DroppableColumn = ({ colItem }: { colItem: BuilderElement }) => {
+  return (
+    <Droppable id={colItem.id}>
+      <div className="flex h-[100px] items-center justify-center border-2 border-dashed border-sky-300/50 bg-sky-200 text-center text-xs">
+        {getElementComponent(colItem) || colItem.id + "\nDrag something "}
+      </div>
+    </Droppable>
+  );
 };
 
-export function ColumnLayout({ layout, position }: { layout: ElementConfig; position: number }) {
+export function ColumnLayout({ layout, index: rowIndex }: { layout: LayoutConfig; index: number }) {
+  console.log(layout);
+
   return (
-    <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${layout.children?.length}, 1fr)`,
-          gap: "6px",
-        }}
-      >
-        {layout.children?.map((layoutChild, index) => (
-          <div
-            key={layoutChild.id}
-            className={`flex min-h-[100px] items-center justify-center border-2 border-dashed border-gray-300 bg-blue-100/50 p-2 text-center`}
-          >
-            <Droppable
-              id={`${layoutChild.id}`}
-              data={{ ...layoutChild, columnIndex: index, rowIndex: position }}
-            >
-              <div>{getElementComponent(layoutChild) || "Drop content here"}</div>
-            </Droppable>
-          </div>
-        ))}
-      </div>
+    <div
+      style={{ display: "grid", gap: "0px", gridTemplateColumns: `repeat(${layout.columns}, 1fr)` }}
+    >
+      {layout.children?.map((colItem, index) => (
+        <DroppableColumn key={colItem.id} colItem={{ ...colItem, index }} />
+      ))}
     </div>
   );
 }

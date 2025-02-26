@@ -5,6 +5,7 @@ import { templates } from "@/lib/db/schema";
 import { notFound } from "next/navigation";
 import { EmailBuilder } from "./EmailBuilder";
 import { EmailBuilderProvider } from "@/providers/email-builder-context";
+import { TopBar } from "./TopBar";
 
 interface EmailBuilderPageProps {
   params: Promise<{ id: string }>;
@@ -22,10 +23,13 @@ export default async function EmailBuilderPage(props: EmailBuilderPageProps) {
   }
 
   return (
-    <div className="flex h-screen flex-col">
-      <EmailBuilderProvider>
-        <EmailBuilder />
-      </EmailBuilderProvider>
-    </div>
+    <EmailBuilderProvider>
+      <div className="flex h-screen flex-col">
+        <div className="h-screen bg-background">
+          <TopBar />
+          <EmailBuilder />
+        </div>
+      </div>
+    </EmailBuilderProvider>
   );
 }

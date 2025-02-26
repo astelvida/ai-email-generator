@@ -1,41 +1,39 @@
 "use client";
 
 import { useEmailBuilder } from "@/providers/email-builder-context";
-import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
+import { closestCenter, closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
 import { Settings } from "./Settings";
 import { EditorCanvas } from "./EditorCanvas";
 import { ElementsSidebar } from "./ElementsSidebar";
-import { TopBar } from "./TopBar";
-import { v4 as uuidv4 } from "uuid";
-import { add } from "date-fns";
+import { SortableContext } from "@dnd-kit/sortable";
 
 export function EmailBuilder() {
-  const { addElement, updateElement } = useEmailBuilder();
+  const { addElement, updateElement, elements } = useEmailBuilder();
 
   function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
     // console.log(event);
 
-    if (event.over && event.over.id === "droppable-canvas") {
-      addElement(event.active.data.current);
-    } else if (event.over && event.over.id !== "droppable-canvas") {
-      console.log("somewehere else  ", event.over.id);
-      updateElement(event.active.data.current, event.over.id);
+    console.log("over,id=", over?.id);
+    console.log("active", active);
+    console.log("over", over);
 
-      console.log(event);
-      // updateElement(event.active.data.current);
+    if (over && over.id === "droppable-canvas") {
+      addElement(active.data.current);
+    }
+
+    if (over && over.id !== "droppable-canvas") {
+      updateElement(active.data.current, over.id);
     }
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
+    <DndContext onDragEnd={handleDragEnd}>
       {/* <SortableContext items={elements.map((element) => element.id)}> */}
-      <div className="h-screen bg-background">
-        <TopBar />
-        <div className="flex flex-1 overflow-hidden">
-          <ElementsSidebar />
-          <EditorCanvas />
-          <Settings />
-        </div>
+      <div className="flex flex-1 overflow-hidden">
+        <ElementsSidebar />
+        <EditorCanvas />
+        <Settings />
       </div>
       {/* </SortableContext> */}
     </DndContext>

@@ -1,4 +1,11 @@
-import { Columns2, Columns3, Columns4, LayoutGrid, RectangleHorizontal } from "lucide-react";
+import {
+  Columns2,
+  Columns3,
+  Columns4,
+  LayoutGrid,
+  LucideContainer,
+  RectangleHorizontal,
+} from "lucide-react";
 
 import {
   FrameIcon,
@@ -10,16 +17,17 @@ import {
   TypeIcon,
 } from "lucide-react";
 import { Instagram, Facebook, Twitter, TikTok } from "@/components/BrandIcons";
-import { ElementConfig } from "./types";
+import { ElementConfig as BlockType, LayoutConfig } from "./types";
 
-export const layouts = [
+export const layouts: LayoutConfig[] = [
   { type: "layout-1", icon: RectangleHorizontal, label: "1 Column", columns: 1 },
   { type: "layout-2", icon: Columns2, label: "2 Columns", columns: 2 },
   { type: "layout-3", icon: Columns3, label: "3 Columns", columns: 3 },
   { type: "layout-4", icon: Columns4, label: "4 Columns", columns: 4 },
+  { type: "container", icon: LucideContainer, label: "Container", columns: 1 },
 ];
 
-const blocks: ElementConfig[] = [
+export const blocks: BlockType[] = [
   {
     type: "button",
     label: "Button",

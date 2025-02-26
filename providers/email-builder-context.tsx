@@ -110,7 +110,6 @@ export function EmailBuilderProvider({ children }: { children: React.ReactNode }
     const rowIndex = Number(rowIdx);
     const columnIndex = Number(columnIdx);
 
-    console.log(activeElement, overId);
     setElements((prev) => [
       ...prev.slice(0, rowIndex),
       {
@@ -126,7 +125,6 @@ export function EmailBuilderProvider({ children }: { children: React.ReactNode }
 
   const addElement = (element: BuilderElement) => {
     const { type, label, ...data } = element;
-
     const newElement = {
       id: uuidv4(),
       type,
@@ -137,6 +135,8 @@ export function EmailBuilderProvider({ children }: { children: React.ReactNode }
       const columns = type.split("-").map(Number)[1];
 
       Object.assign(newElement, {
+        layout: true,
+        columns,
         children: Array.from({ length: columns }, (_, index) => ({
           id: `${newElement.id}-${elements.length}-${index}`,
         })),
@@ -144,8 +144,6 @@ export function EmailBuilderProvider({ children }: { children: React.ReactNode }
     } else {
       Object.assign(newElement, data);
     }
-
-    console.log(newElement);
 
     setElements((prev) => [...prev, newElement]);
   };

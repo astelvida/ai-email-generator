@@ -14,34 +14,32 @@ import { ElementRenderer } from "./ElementRenderer";
 
 export function EditorCanvas() {
   const { view } = useViewStore();
-  const { isOver, setNodeRef, over } = useDroppable({
+  const { isOver, setNodeRef } = useDroppable({
     id: "droppable-canvas",
   });
 
   const { elements } = useEmailBuilder();
 
   return (
-    <div className="flex-1 overflow-auto bg-muted/20 p-4">
+    <div ref={setNodeRef} className="m-10 flex-1 overflow-auto bg-muted/20">
       <div
-        ref={setNodeRef}
         className={cn(
-          "mx-auto rounded-lg bg-white p-8 shadow-sm transition-all duration-200 ease-in-out",
-          view === "desktop" ? "w-full max-w-2xl" : "w-full max-w-md",
-          isOver && "ring-2 ring-primary ring-offset-2",
+          "m-10 mx-auto border-2 border-dashed border-purple-200 shadow-sm transition-all duration-200 ease-in-out",
+          view === "desktop" ? "max-w-2xl" : "max-w-md",
+          isOver && "ring-3 bg-purple-50 ring-teal-500 ring-offset-2",
         )}
       >
-        {elements.length === 0 ? (
-          <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-            Start by dragging a layout or element to the canvas
+        {elements.length === 0 && (
+          <div className="flex h-[300px] items-center justify-center bg-white text-muted-foreground">
+            Drag something to get started
           </div>
-        ) : (
-          elements.map((element, index) =>
-            element.type?.includes("layout") ? (
-              <ColumnLayout key={element.id} layout={element} />
-            ) : (
-              <ElementRenderer key={element.id} element={element} />
-            ),
-          )
+        )}
+        {elements.map((element, index) =>
+          element.type?.includes("layout") ? (
+            <ColumnLayout key={element.id} layout={element} />
+          ) : (
+            <ElementRenderer key={element.id} element={element} />
+          ),
         )}
       </div>
     </div>

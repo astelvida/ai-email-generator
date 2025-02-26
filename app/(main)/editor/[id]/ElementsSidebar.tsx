@@ -1,17 +1,16 @@
 "use client";
 
-import ElementList from "@/lib/configs/ElementList";
-import { layouts } from "@/lib/data";
+import { layouts, blocks } from "@/lib/data";
 import { ElementConfig } from "@/lib/types";
 import { Separator } from "@/components/ui/separator";
 import { useDraggable } from "@dnd-kit/core";
-import { v4 as uuidv4 } from "uuid";
 
 export function DraggableElement({ data, id }: { data: ElementConfig; id: string }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
     data,
   });
+
   const style = transform
     ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
     : undefined;
@@ -51,7 +50,7 @@ export function ElementsSidebar() {
         <div className="space-y-6 p-4">
           <ElementsSection title="Layouts" items={layouts} />
           <Separator />
-          <ElementsSection title="Content" items={ElementList} />
+          <ElementsSection title="Blocks" items={blocks} />
         </div>
       </div>
     </div>

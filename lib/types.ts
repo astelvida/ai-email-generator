@@ -70,7 +70,7 @@ export interface ElementConfig {
 export interface LayoutConfig {
   id?: string;
   label: string;
-  type: "layout-1" | "layout-2" | "layout-3" | "layout-4";
-  columns: 1 | 2 | 3 | 4;
+  type: "layout-1" | "layout-2" | "layout-3" | "layout-4" | "container";
+  columns?: 1 | 2 | 3 | 4;
   icon: LucideIcon;
 }
