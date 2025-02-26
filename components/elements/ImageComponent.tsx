@@ -3,14 +3,14 @@ import { ImageElementStyle, ElementOuterStyle } from "@/lib/types/config.types";
 
 interface ImageComponentProps {
   style: ImageElementStyle;
-  imageUrl?: string;
-  outerStyle?: ElementOuterStyle;
+  src?: string;
+  alt?: string;
 }
-function ImageComponent({ style, imageUrl = "", outerStyle = {} }: ImageComponentProps) {
+function ImageComponent({ style, src = "", alt = "" }: ImageComponentProps) {
   return (
-    <div style={outerStyle}>
+    <div style={style}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={imageUrl || "/default-image.png"} alt="image" style={style} />
+      <img src={src || "/default-image.png"} alt={alt} style={style} />
     </div>
   );
 }

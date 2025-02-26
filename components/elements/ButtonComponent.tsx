@@ -3,15 +3,14 @@ import { ElementStyle, ElementOuterStyle } from "@/lib/types/config.types";
 
 interface ButtonComponentProps {
   style: ElementStyle;
-  content?: string;
+  text?: string;
   url?: string;
-  outerStyle?: ElementOuterStyle;
 }
 
-function ButtonComponent({ style, content, url, outerStyle }: ButtonComponentProps) {
+function ButtonComponent({ style, text, url }: ButtonComponentProps) {
   return (
-    <a href={url} style={outerStyle}>
-      <button style={style}>{content}</button>
+    <a href={url} style={style}>
+      {text}
     </a>
   );
 }
