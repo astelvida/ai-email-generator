@@ -19,9 +19,12 @@ const DroppableColumn = ({ colItem }: { colItem: BuilderElement }) => {
   );
 };
 
-export function ColumnLayout({ layout, index: rowIndex }: { layout: LayoutConfig; index: number }) {
-  console.log(layout);
+interface ColumnLayoutProps {
+  layout: LayoutConfig;
+  index: number;
+}
 
+export function ColumnLayout({ layout, index: rowIndex }: ColumnLayoutProps) {
   return (
     <div
       style={{ display: "grid", gap: "0px", gridTemplateColumns: `repeat(${layout.columns}, 1fr)` }}

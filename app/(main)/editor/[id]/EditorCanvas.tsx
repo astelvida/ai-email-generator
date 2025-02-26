@@ -20,6 +20,10 @@ export function EditorCanvas() {
 
   const { elements } = useEmailBuilder();
 
+  useEffect(() => {
+    console.log(elements);
+  }, []);
+
   return (
     <div ref={setNodeRef} className="m-10 flex-1 overflow-auto bg-muted/20">
       <div
