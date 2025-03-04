@@ -13,13 +13,36 @@ import {
   arrayMove,
   horizontalListSortingStrategy,
   rectSortingStrategy,
+  rectSwappingStrategy,
+  verticalListSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  useSortable,
 } from "@dnd-kit/sortable";
-
-import { SortableItem } from "./SortableItem";
+import { CSS } from "@dnd-kit/utilities";
 import { Button } from "./ui/button";
+
+type MySortableItemProps = {
+  id: string | number;
+  children: React.ReactNode;
+};
+
+function MySortableItem(props: MySortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: props.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {props.children}
+    </div>
+  );
+}
 
 export function SortableApp() {
   const [items, setItems] = useState([1, 2, 3, 4, 6, 7, 8]);
@@ -32,12 +55,12 @@ export function SortableApp() {
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={items} strategy={horizontalListSortingStrategy}>
+      <SortableContext items={items} strategy={rectSortingStrategy}>
         <div className="grid grid-cols-3 gap-2">
           {items.map((id) => (
-            <SortableItem key={id} id={id}>
+            <MySortableItem key={id} id={id}>
               <Button variant="outline"> # {id} %</Button>
-            </SortableItem>
+            </MySortableItem>
           ))}
         </div>
       </SortableContext>

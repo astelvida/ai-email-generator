@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs/server";
-import { PlusIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { db } from "@/lib/db";

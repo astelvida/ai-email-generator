@@ -4,22 +4,47 @@ import ButtonComponent from "../../../../components/elements/ButtonComponent";
 import TextComponent from "../../../../components/elements/TextComponent";
 import ImageComponent from "../../../../components/elements/ImageComponent";
 import DividerComponent from "../../../../components/elements/DividerComponent";
+import { useSortable } from "@dnd-kit/sortable";
+import { UniqueIdentifier } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
-export const getElementComponent = (element: ElementConfig) => {
-  switch (element?.type) {
+export const getElementComponent = (block: ElementConfig) => {
+  switch (block?.type) {
     case "button":
-      return <ButtonComponent {...element} />;
+      return <ButtonComponent {...block} />;
     case "text":
-      return <TextComponent {...element} />;
+      return <TextComponent {...block} />;
     case "image":
-      return <ImageComponent {...element} />;
+      return <ImageComponent {...block} />;
     case "divider":
-      return <DividerComponent {...element} />;
+      return <DividerComponent {...block} />;
     default:
       return null;
   }
 };
 
-export function ElementRenderer({ element }: { element: ElementConfig }) {
-  return getElementComponent(element);
+export function BlockContainer({
+  block,
+  parentIndex,
+}: {
+  block: ElementConfig;
+  parentIndex: number;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: block.id as UniqueIdentifier,
+    data: {
+      parentIndex: parentIndex,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {getElementComponent(block)}
+    </div>
+  );
 }

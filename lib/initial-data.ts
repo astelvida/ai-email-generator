@@ -85,7 +85,12 @@ export const initialElements: BuilderElement[] = [
         },
         children: [],
       },
-      null,
+      {
+        id: "1336-2-2",
+        type: "column",
+        label: "ENTER CONTENT HERE",
+        children: [],
+      },
     ],
   },
 ];

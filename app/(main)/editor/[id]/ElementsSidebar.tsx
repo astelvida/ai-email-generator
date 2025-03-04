@@ -17,7 +17,7 @@ export function DraggableElement({ data, id }: { data: ElementConfig; id: string
 
   return (
     <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      <div className="group flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-gray-300 p-2 hover:border-indigo-600 hover:shadow-md">
+      <div className="group z-10 flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-gray-300 p-2 hover:border-indigo-600 hover:shadow-md">
         <div className="rounded-full bg-gray-100 p-2 group-hover:bg-indigo-100/50 group-hover:text-indigo-600">
           <data.icon className="h-5 w-5" />
         </div>

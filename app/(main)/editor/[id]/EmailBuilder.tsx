@@ -1,6 +1,5 @@
 "use client";
 
-// import { useEmailBuilder } from "@/providers/email-builder-context";
 import {
   closestCenter,
   DndContext,
@@ -10,8 +9,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  UniqueIdentifier,
 } from "@dnd-kit/core";
-// import { Settings } from "./Settings";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ElementsSidebar } from "./ElementsSidebar";
 import {
@@ -28,13 +27,12 @@ import { cn } from "@/lib/utils";
 import { initialElements } from "@/lib/initial-data";
 import { BuilderElement } from "@/lib/types";
 import { useViewStore } from "@/stores/view";
-import { UniqueIdentifier } from "@dnd-kit/core";
 import { Settings } from "./Settings";
 import { DroppableContentArea } from "./DroppableContentArea";
 import { EmptyState } from "./EmptyState";
 import { v4 as uuidv4 } from "uuid";
-import { Plus, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { LayoutContainer } from "./LayoutContainer";
+import { useImmer } from "use-immer";
 
 interface SortableItemProps {
   id: string;
@@ -59,13 +57,10 @@ export function SortableItem(props: SortableItemProps) {
 }
 
 export function EmailBuilder() {
-  const [layouts, setLayouts] = useState<BuilderElement[]>(initialElements);
-  const [activeElementId, setActiveElementId] = useState<string | null>(null);
+  const [layouts, setLayouts] = useImmer<BuilderElement[]>(initialElements);
+  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
   const [activeLayoutId, setActiveLayoutId] = useState<string | null>(null);
   const { view } = useViewStore();
-  // const { isOver, setNodeRef } = useDroppable({
-  //   id: "droppable-canvas",
-  // });
 
   const layoutIds = useMemo(
     () => layouts.map((layout) => layout.id as UniqueIdentifier),
@@ -85,13 +80,22 @@ export function EmailBuilder() {
 
   function handleDragStart(event: DragStartEvent) {
     setActiveLayoutId(event.active.id as string);
+    setActiveBlockId(event.active.id as string);
     console.log("drag start", event);
   }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    console.log("drag end", active, over);
+    console.log("active", active.id);
+    console.log("over", over?.id);
+
+    setLayouts((layouts) => {
+      const oldIndex = layouts.findIndex((layout) => layout.id === active.id);
+      const newIndex = layouts.findIndex((layout) => layout.id === over?.id);
+
+      return arrayMove(layouts, oldIndex, newIndex);
+    });
 
     function createNewLayout() {
       return {
@@ -100,41 +104,66 @@ export function EmailBuilder() {
         children: Array.from({ length: parseInt(active.data.current?.columns) }, () => null),
       };
     }
-    if (active.id !== over?.id) {
-      console.log("active", active.id);
-      console.log("over", over?.id);
-      if (active.id.toString().startsWith("layout")) {
+
+    if (active.id.toString().startsWith("layout")) {
+      setLayouts((layouts) => {
+        const newLayout = createNewLayout();
+        const nextLayouts = [...layouts, newLayout];
+
+        const oldIndex = nextLayouts.length - 1;
+        const newIndex = nextLayouts.findIndex((layout) => layout.id === over?.id);
+
+        return arrayMove(nextLayouts, oldIndex, newIndex);
+      });
+    } else if (!active.id.toString().startsWith("layout")) {
+      const [layoutIndexOld, colIndexOld] = active.id.toString().split("-").map(Number);
+      const [layoutIndexNew, colIndexNew] = over?.id.toString().split("-").map(Number);
+
+      console.log("layoutIndexOld", layoutIndexOld);
+      console.log("colIndexOld", colIndexOld);
+      console.log("layoutIndexNew", layoutIndexNew);
+      console.log("colIndexNew", colIndexNew);
+
+      if (layoutIndexOld === layoutIndexNew) {
         setLayouts((layouts) => {
-          const newLayout = createNewLayout();
-          const nextLayouts = [...layouts, newLayout];
-
-          const oldIndex = nextLayouts.length - 1;
-          const newIndex = nextLayouts.findIndex((layout) => layout.id === over?.id);
-
-          console.log("oldIndex", oldIndex);
-          console.log("newIndex", newIndex);
-
-          return arrayMove(nextLayouts, -1, newIndex);
+          return layouts.map((layout, idx) => {
+            if (idx === layoutIndexNew) {
+              return {
+                ...layout,
+                children: arrayMove(layout.children, colIndexOld, colIndexNew),
+              };
+            }
+            return layout;
+          });
         });
-      } else {
+      } else if (isNaN(layoutIndexOld)) {
         setLayouts((layouts) => {
-          const oldIndex = layouts.findIndex((layout) => layout.id === active.id);
-          const newIndex = layouts.findIndex((layout) => layout.id === over.id);
+          // const [layoutIndex, colIndex] = over?.id.toString().split("-").map(Number);
 
-          return arrayMove(layouts, oldIndex, newIndex);
+          console.log(active.data.current);
+          const newLayouts = layouts.map((layout, index) => {
+            if (index === layoutIndexNew) {
+              return {
+                ...layout,
+                children: layout.children?.map((child, childIndex) =>
+                  childIndex === colIndexNew ? { ...child, ...active.data.current } : child,
+                ),
+              };
+            }
+            return layout;
+          });
+
+          console.log("newLayouts", newLayouts);
+
+          return newLayouts;
         });
       }
     }
     setActiveLayoutId(null);
+    setActiveBlockId(null);
   }
 
-  const gridColsProp = {
-    1: "grid-cols-1",
-    2: "grid-cols-2",
-    3: "grid-cols-3",
-    4: "grid-cols-4",
-  };
-
+  // remove layout
   function handleRemove(id: string, index: number) {
     setLayouts((layouts) => {
       return layouts.filter((layout) => layout.id !== id);
@@ -151,61 +180,33 @@ export function EmailBuilder() {
       <div className="flex flex-1 overflow-hidden">
         <ElementsSidebar />
 
-        <DroppableContentArea>
-          <div className="flex flex-col gap-6 p-6">
-            {layouts.length === 0 ? (
-              <EmptyState message="Drag a layout here to get started" />
-            ) : (
-              <ScrollArea
-                className={cn(
-                  "mx-auto w-full border-2 border-dashed border-gray-500",
-                  // layouts.length > 1 && "border-purple-300",
-                  view === "desktop" ? "max-w-2xl" : "max-w-md",
-                )}
-              >
-                <SortableContext items={layoutIds} strategy={verticalListSortingStrategy}>
-                  {layoutIds.map((id, index) => (
-                    <SortableItem key={id} id={id}>
-                      <div className="group relative m-4 border-2 border-gray-200 bg-white shadow-sm transition-colors hover:border-purple-500">
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="z-100 absolute -right-3 -top-3 h-7 w-7 rounded-full bg-red-500 p-0 text-white hover:bg-red-600"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            handleRemove(id as string, index);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Remove layout</span>
-                        </Button>
-                        <div
-                          className={cn(`grid ${gridColsProp[layouts[index]?.columns]} gap-2 p-2`)}
-                        >
-                          {layouts[index].children?.map((column, columnIndex) => (
-                            <div
-                              key={columnIndex}
-                              className={`relative min-h-[100px] rounded-lg border-2 border-dashed border-purple-300 bg-purple-50 p-4 transition-colors`}
-                            >
-                              <div
-                                className="flex flex-col items-center justify-center gap-2 text-center text-purple-500"
-                                key={columnIndex}
-                              >
-                                <Plus className="h-6 w-6" />
-                                <p className="text-sm">Drop content blocks here</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </SortableItem>
-                  ))}
-                </SortableContext>
-              </ScrollArea>
-            )}
-          </div>
+        <DroppableContentArea
+          className={cn(
+            "mx-auto border-2 border-dashed border-gray-500",
+            layouts.length > 1 && "border-purple-300",
+            view === "desktop" ? "w-full max-w-2xl" : "w-full max-w-md",
+          )}
+        >
+          {layouts.length === 0 ? (
+            <EmptyState message="Drag a layout here to get started" />
+          ) : (
+            <ScrollArea>
+              <SortableContext items={layoutIds} strategy={verticalListSortingStrategy}>
+                {layouts.map((layout, index) => (
+                  <LayoutContainer
+                    key={layout.id}
+                    id={layout.id}
+                    index={index}
+                    layout={layout}
+                    handleRemove={handleRemove}
+                    blocks={layout.children}
+                  />
+                ))}
+              </SortableContext>
+            </ScrollArea>
+          )}
         </DroppableContentArea>
+
         <Settings selectedElement={layouts[0]} updateElement={() => {}} />
       </div>
     </DndContext>
