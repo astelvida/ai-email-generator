@@ -16,6 +16,8 @@ interface LayoutContainerProps {
 }
 
 export function LayoutContainer({ id, layout, index, handleRemove }: LayoutContainerProps) {
+  console.log("layout", layout);
+
   const blocksIds = layout.children?.map((block, blockIndex) => `${index}-${blockIndex}`);
 
   const gridColsProp = {

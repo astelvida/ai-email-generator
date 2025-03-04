@@ -99,9 +99,15 @@ export function EmailBuilder() {
 
     function createNewLayout() {
       return {
-        id: `block-${uuidv4()}`,
+        id: `row-${uuidv4()}`,
         ...active.data.current,
-        children: Array.from({ length: parseInt(active.data.current?.columns) }, () => null),
+        children: Array.from({ length: parseInt(active.data.current?.columns) }, (_, index) => ({
+          id: `column-${uuidv4()}`,
+          type: "column",
+          "grid-columns": 12 / parseInt(active.data.current?.columns),
+          index,
+          children: [],
+        })),
       };
     }
 
