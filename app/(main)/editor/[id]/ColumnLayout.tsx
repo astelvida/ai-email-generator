@@ -1,35 +1,40 @@
 "use client";
 
-import { Droppable } from "@/components/Droppable";
-import { BuilderElement, ElementConfig } from "@/lib/types";
+import { BuilderElement } from "@/lib/types";
 
-import { cn } from "@/lib/utils";
 import { LayoutConfig } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { ListStartIcon, PlusIcon } from "lucide-react";
 import { getElementComponent } from "./ElementRenderer";
+import { useDroppable } from "@dnd-kit/core";
 
-const DroppableColumn = ({ colItem }: { colItem: BuilderElement }) => {
+export const DroppableColumn = ({ colItem }: { colItem: BuilderElement }) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: colItem.id,
+  });
+
+  const droppableStyle = {
+    backgroundColor: isOver ? "lightblue" : undefined,
+  };
+
   return (
-    <Droppable id={colItem.id}>
-      <div className="flex h-[100px] items-center justify-center border-2 border-dashed border-sky-300/50 bg-sky-200 text-center text-xs">
-        {getElementComponent(colItem) || colItem.id + "\nDrag something "}
-      </div>
-    </Droppable>
+    <div
+      ref={setNodeRef}
+      style={droppableStyle}
+      className="flex h-[100px] items-center justify-center border-2 border-dashed border-sky-300/50 bg-sky-200 text-center text-xs"
+    >
+      {getElementComponent(colItem) || colItem.id + "\nDrag something "}
+    </div>
   );
 };
 
-interface ColumnLayoutProps {
+interface DroppableColumnLayoutProps {
   layout: LayoutConfig;
   index: number;
 }
 
-export function ColumnLayout({ layout, index: rowIndex }: ColumnLayoutProps) {
+export function DroppableColumnLayout({ layout, index: rowIndex }: DroppableColumnLayoutProps) {
   return (
-    <div
-      style={{ display: "grid", gap: "0px", gridTemplateColumns: `repeat(${layout.columns}, 1fr)` }}
-    >
-      {layout.children?.map((colItem, index) => (
+    <div style={{ display: "grid", gridTemplateColumns: `repeat(${layout.columns}, 1fr)` }}>
+      {layout.children.map((colItem, index) => (
         <DroppableColumn key={colItem.id} colItem={{ ...colItem, index }} />
       ))}
     </div>

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Trash2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Bold } from "lucide-react";
-import { useEmailBuilder } from "@/providers/email-builder-context";
+import type { BuilderElement } from "@/lib/types";
 
 const fontOptions = [
   "Arial",
@@ -31,8 +31,14 @@ const fontOptions = [
   "Impact",
 ];
 
-export function Settings() {
-  const { selectedElement, updateElement } = useEmailBuilder();
+export function Settings({
+  selectedElement,
+  updateElement,
+}: {
+  selectedElement: BuilderElement;
+  updateElement: (element: BuilderElement) => void;
+}) {
+  // const { selectedElement, updateElement } = useEmailBuilder();
 
   if (!selectedElement) {
     return (

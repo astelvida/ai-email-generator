@@ -23,13 +23,13 @@ export default async function EmailBuilderPage(props: EmailBuilderPageProps) {
   }
 
   return (
-    <EmailBuilderProvider>
-      <div className="flex h-screen flex-col">
-        <div className="h-screen bg-background">
-          <TopBar />
-          <EmailBuilder />
-        </div>
+    // <EmailBuilderProvider>
+    <div className="flex h-screen flex-col">
+      <div className="h-screen bg-background">
+        <TopBar />
+        <EmailBuilder />
       </div>
-    </EmailBuilderProvider>
+    </div>
+    // </EmailBuilderProvider>
   );
 }

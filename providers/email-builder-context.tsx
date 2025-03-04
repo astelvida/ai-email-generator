@@ -34,18 +34,23 @@ const initialElements: BuilderElement[] = [
           width: "100%",
           height: "100%",
         },
+        children: [],
       },
       {
         id: "1334-0-1",
+        type: "text",
+        label: "Text",
+        text: "Hello, world!",
+        children: [],
       },
     ],
   },
-  {
-    id: "1335",
-    type: "text",
-    label: "Text",
-    text: "Hello, world!",
-  },
+  // {
+  //   id: "1335",
+  //   type: "text",
+  //   label: "Text",
+  //   text: "Hello, world!",
+  // },
   {
     id: "1336",
     type: "layout",
@@ -65,6 +70,7 @@ const initialElements: BuilderElement[] = [
           borderRadius: "10px",
           padding: "10px",
         },
+        children: [],
       },
       {
         id: "1336-2-1",
@@ -76,8 +82,9 @@ const initialElements: BuilderElement[] = [
           color: "#000",
           textAlign: "center",
         },
+        children: [],
       },
-      { id: "1336-2-2" },
+      { id: "1336-2-2", type: "column", label: "Column", children: [] },
     ],
   },
 ];
