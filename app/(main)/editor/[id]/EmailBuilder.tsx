@@ -88,19 +88,36 @@ export function EmailBuilder() {
 
     console.log("drag end", active, over);
 
-    if (active.id.toString().startsWith("layout")) {
-      console.log("layout");
+    function createNewLayout() {
+      return {
+        id: `block-${uuidv4()}`,
+        ...active.data.current,
+        children: Array.from({ length: parseInt(active.data.current?.columns) }, () => null),
+      };
+    }
 
-      setLayouts((layouts) => [
-        ...layouts,
-        {
-          id: `block-${uuidv4()}`,
-          ...active.data.current,
-          children: Array.from({ length: parseInt(active.data.current?.columns) }, () => null),
-        },
-      ]);
-    } else {
-      if (active.id !== over?.id) {
+    // if (active.id.toString().startsWith("layout")) {
+    //   console.log("layout");
+
+    //   setLayouts((layouts) => [...layouts]);
+    // } else {
+    if (active.id !== over?.id) {
+      console.log("active", active.id);
+      console.log("over", over?.id);
+      if (active.id.toString().startsWith("layout")) {
+        setLayouts((layouts) => {
+          const newLayout = createNewLayout();
+          const nextLayouts = [...layouts, newLayout];
+
+          const oldIndex = nextLayouts.length - 1;
+          const newIndex = nextLayouts.findIndex((layout) => layout.id === over?.id);
+
+          console.log("oldIndex", oldIndex);
+          console.log("newIndex", newIndex);
+
+          return arrayMove(nextLayouts, -1, newIndex);
+        });
+      } else {
         setLayouts((layouts) => {
           const oldIndex = layouts.findIndex((layout) => layout.id === active.id);
           const newIndex = layouts.findIndex((layout) => layout.id === over.id);
@@ -133,7 +150,7 @@ export function EmailBuilder() {
             {layouts.length === 0 ? (
               <EmptyState message="Drag a layout here to get started" />
             ) : (
-              <ScrollArea className="mx-auto h-full w-full max-w-[1000px] border-2 border-dashed border-gray-300 p-10">
+              <ScrollArea className="mx-auto border-2 border-dashed border-gray-300 p-10">
                 <SortableContext items={layoutIds} strategy={verticalListSortingStrategy}>
                   {layoutIds.map((id, index) => (
                     <SortableItem key={id} id={id}>
