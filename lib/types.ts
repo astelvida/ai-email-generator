@@ -54,23 +54,37 @@ export interface ImageElementStyle extends ElementStyle {
   padding?: string;
 }
 
-export interface ElementConfig {
+export interface BlockType {
   id?: string;
+  category?: "block";
   type: "button" | "text" | "image" | "divider";
-  label: string;
-  icon: LucideIcon;
+  style: React.CSSProperties;
+
   text?: string;
   url?: string;
   imageUrl?: string;
   alt?: string;
-  style: ElementStyle | ImageElementStyle;
+
+  label: string;
+  icon: LucideIcon;
+}
+
+export interface ColumnType {
+  id: string;
+  "grid-columns": number;
+  type: "column" | "container";
+  category?: "column" | "container";
+  blocks: BlockType[];
+  style: React.CSSProperties;
 }
 
 // Types for Layout.tsx
-export interface LayoutConfig {
-  id?: string;
+export interface LayoutType {
+  id: string;
+  category?: "layout";
+  type: string;
   label: string;
-  type: "layout-1" | "layout-2" | "layout-3" | "layout-4" | "container";
-  columns?: 1 | 2 | 3 | 4;
+  columns: number[];
+  style: React.CSSProperties;
   icon: LucideIcon;
 }

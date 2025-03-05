@@ -1,14 +1,17 @@
 "use client";
 
 import { layouts, blocks } from "@/lib/data";
-import { ElementConfig } from "@/lib/types";
+import { BlockType } from "@/lib/types";
 import { Separator } from "@/components/ui/separator";
 import { useDraggable } from "@dnd-kit/core";
+import { type } from "os";
 
-export function DraggableElement({ data, id }: { data: ElementConfig; id: string }) {
+export function DraggableElement({ data, id }: { data: BlockType; id: string }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
-    data,
+    data: {
+      ...data,
+    },
   });
 
   const style = transform
@@ -27,13 +30,26 @@ export function DraggableElement({ data, id }: { data: ElementConfig; id: string
   );
 }
 
-export const ElementsSection = ({ title, items }: { title: string; items: ElementConfig[] }) => {
+export const ElementsSection = ({ title, items }: { title: string; items: BlockType[] }) => {
   return (
     <div className="space-y-2">
       <h3 className="px-2 text-xs font-medium text-muted-foreground">{title}</h3>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {items.map((item) => (
-          <DraggableElement key={item.type} id={item.type} data={item} />
+          <DraggableElement
+            key={item.type}
+            id={item.type}
+            data={{
+              ...item,
+              isEmpty: item.type.endsWith("empty"),
+              type:
+                item.type === "column"
+                  ? "column"
+                  : item.type.startsWith("layout")
+                    ? "layout"
+                    : item.type,
+            }}
+          />
         ))}
       </div>
     </div>

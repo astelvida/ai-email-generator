@@ -1,5 +1,5 @@
 "use client";
-import { ElementConfig } from "@/lib/types";
+import { BlockType } from "@/lib/types";
 import ButtonComponent from "../../../../components/elements/ButtonComponent";
 import TextComponent from "../../../../components/elements/TextComponent";
 import ImageComponent from "../../../../components/elements/ImageComponent";
@@ -8,7 +8,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-export const getElementComponent = (block: ElementConfig) => {
+export const getElementComponent = (block: BlockType) => {
   switch (block?.type) {
     case "button":
       return <ButtonComponent {...block} />;
@@ -23,13 +23,7 @@ export const getElementComponent = (block: ElementConfig) => {
   }
 };
 
-export function BlockContainer({
-  block,
-  parentIndex,
-}: {
-  block: ElementConfig;
-  parentIndex: number;
-}) {
+export function BlockContainer({ block, parentIndex }: { block: BlockType; parentIndex: number }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: block.id as UniqueIdentifier,
     data: {

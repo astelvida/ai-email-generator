@@ -18,7 +18,7 @@ interface LayoutContainerProps {
 export function LayoutContainer({ id, layout, index, handleRemove }: LayoutContainerProps) {
   console.log("layout", layout);
 
-  const blocksIds = layout.children?.map((block, blockIndex) => `${index}-${blockIndex}`);
+  const blocksIds = layout.columns?.map((block, blockIndex) => `${index}-${blockIndex}`);
 
   const gridColsProp = {
     1: "grid-cols-1",
@@ -26,6 +26,12 @@ export function LayoutContainer({ id, layout, index, handleRemove }: LayoutConta
     3: "grid-cols-3",
     4: "grid-cols-4",
   };
+
+  console.log("gridColsProp", {
+    display: "grid",
+    gap: "1rem",
+    gridTemplateColumns: layout.columns.map((column) => `${column["grid-columns"]}fr`).join(" "),
+  });
 
   return (
     <SortableItem
@@ -47,13 +53,18 @@ export function LayoutContainer({ id, layout, index, handleRemove }: LayoutConta
             handleRemove(id as string, index);
           }}
         >
-          <Trash2 className="h-4 w-4" />
-          <span className="sr-only">Remove layout</span>
+          <Trash2 className="h-4 w-4" />x<span className="sr-only">Remove layout</span>
         </Button>
 
-        <div className={cn(`grid ${gridColsProp[layout?.columns]} gap-2 p-2`)}>
+        <div
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: layout.columnsGrid.map((col) => `${col}fr`).join(" "),
+          }}
+        >
           <SortableContext items={blocksIds} strategy={rectSortingStrategy}>
-            {layout.children?.map((column, columnIndex) => (
+            {layout.columns?.map((column, columnIndex) => (
               <SortableItem
                 key={blocksIds[columnIndex]}
                 id={blocksIds[columnIndex]}

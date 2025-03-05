@@ -36,7 +36,7 @@ import { useImmer } from "use-immer";
 
 interface SortableItemProps {
   id: string;
-  children: React.ReactNode;
+  columns: React.ReactNode;
 }
 
 export function SortableItem(props: SortableItemProps) {
@@ -51,16 +51,39 @@ export function SortableItem(props: SortableItemProps) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {props.children}
+      {props.columns}
     </div>
   );
 }
 
 export function EmailBuilder() {
-  const [layouts, setLayouts] = useImmer<BuilderElement[]>(initialElements);
-  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
+  const [layouts, setLayouts] = useState<BuilderElement[]>([]);
+  // const [columns, setColumns] = useImmer<BuilderElement[]>([]);
+  // const [blocks, setBlocks] = useImmer<BuilderElement[]>([]);
+
   const [activeLayoutId, setActiveLayoutId] = useState<string | null>(null);
+  const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
+  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
+
   const { view } = useViewStore();
+
+  function createNewLayout(layoutData: BuilderElement, parentIndex: number) {
+    const layoutId = `row-${uuidv4()}`;
+    return {
+      ...layoutData,
+      id: layoutId,
+      type: "layout",
+      columns: layoutData?.columnsGrid.map((gridColumns: number, index: number) => ({
+        id: `column-${uuidv4()}`,
+        type: "column",
+        "grid-columns": gridColumns,
+        index,
+        parentId: layoutId,
+        parentIndex: parentIndex,
+        blocks: [],
+      })),
+    };
+  }
 
   const layoutIds = useMemo(
     () => layouts.map((layout) => layout.id as UniqueIdentifier),
@@ -80,6 +103,7 @@ export function EmailBuilder() {
 
   function handleDragStart(event: DragStartEvent) {
     setActiveLayoutId(event.active.id as string);
+    setActiveColumnId(event.active.id as string);
     setActiveBlockId(event.active.id as string);
     console.log("drag start", event);
   }
@@ -87,39 +111,35 @@ export function EmailBuilder() {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    console.log("active", active.id);
-    console.log("over", over?.id);
+    console.log({ activeId: active.id, overId: over?.id });
 
-    setLayouts((layouts) => {
-      const oldIndex = layouts.findIndex((layout) => layout.id === active.id);
-      const newIndex = layouts.findIndex((layout) => layout.id === over?.id);
-
-      return arrayMove(layouts, oldIndex, newIndex);
-    });
-
-    function createNewLayout() {
-      return {
-        id: `row-${uuidv4()}`,
-        ...active.data.current,
-        children: Array.from({ length: parseInt(active.data.current?.columns) }, (_, index) => ({
-          id: `column-${uuidv4()}`,
-          type: "column",
-          "grid-columns": 12 / parseInt(active.data.current?.columns),
-          index,
-          children: [],
-        })),
-      };
+    if (!over) {
+      console.log("no over");
+      return;
     }
 
-    if (active.id.toString().startsWith("layout")) {
-      setLayouts((layouts) => {
-        const newLayout = createNewLayout();
-        const nextLayouts = [...layouts, newLayout];
+    // if (active.id === over.id) {
+    //   return;
+    // }
 
-        const oldIndex = nextLayouts.length - 1;
-        const newIndex = nextLayouts.findIndex((layout) => layout.id === over?.id);
+    // // reorder layouts
+    // setLayouts((layouts) => {
+    //   const oldIndex = layouts.findIndex((layout) => layout.id === active.id);
+    //   const newIndex = layouts.findIndex((layout) => layout.id === over?.id);
+    //   return arrayMove(layouts, oldIndex, newIndex);
+    // });
 
-        return arrayMove(nextLayouts, oldIndex, newIndex);
+    // create new layout
+    const { icon: _icon, ...newLayoutData } = active.data.current;
+    if (active.id.toString().endsWith("empty")) {
+      setLayouts((prevLayouts) => {
+        const newLayout = createNewLayout(newLayoutData, prevLayouts.length);
+        const nextLayouts = [...prevLayouts, newLayout];
+
+        // const oldIndex = nextLayouts.length - 1;
+        // const newIndex = nextLayouts.findIndex((layout) => layout.id === over?.id);
+        // return arrayMove(nextLayouts, oldIndex, newIndex);
+        return nextLayouts;
       });
     } else if (!active.id.toString().startsWith("layout")) {
       const [layoutIndexOld, colIndexOld] = active.id.toString().split("-").map(Number);
@@ -136,7 +156,7 @@ export function EmailBuilder() {
             if (idx === layoutIndexNew) {
               return {
                 ...layout,
-                children: arrayMove(layout.children, colIndexOld, colIndexNew),
+                columns: arrayMove(layout.columns, colIndexOld, colIndexNew),
               };
             }
             return layout;
@@ -151,7 +171,7 @@ export function EmailBuilder() {
             if (index === layoutIndexNew) {
               return {
                 ...layout,
-                children: layout.children?.map((child, childIndex) =>
+                columns: layout.columns?.map((child, childIndex) =>
                   childIndex === colIndexNew ? { ...child, ...active.data.current } : child,
                 ),
               };
@@ -181,7 +201,7 @@ export function EmailBuilder() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       sensors={sensors}
-      collisionDetection={closestCenter}
+      // collisionDetection={closestCenter}
     >
       <div className="flex flex-1 overflow-hidden">
         <ElementsSidebar />
@@ -205,7 +225,7 @@ export function EmailBuilder() {
                     index={index}
                     layout={layout}
                     handleRemove={handleRemove}
-                    blocks={layout.children}
+                    blocks={layout.columns}
                   />
                 ))}
               </SortableContext>
