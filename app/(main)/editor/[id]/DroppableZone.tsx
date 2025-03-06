@@ -1,22 +1,24 @@
-import type React from "react"
-import { Plus } from "lucide-react"
-import { useDroppable } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import type React from "react";
+import { Plus } from "lucide-react";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 interface DroppableZoneProps {
-  id: string
-  children?: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-  items: string[]
+  id: string;
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  items: string[];
 }
 
 export function DroppableZone({ id, children, className = "", style, items }: DroppableZoneProps) {
-  const { setNodeRef, isOver } = useDroppable({ id })
-  const borderClass = isOver ? "border-purple-500 bg-purple-100" : "border-purple-300 bg-purple-50/50"
+  const { setNodeRef, isOver } = useDroppable({ id });
+  const borderClass = isOver
+    ? "border-purple-500 bg-purple-100"
+    : "border-purple-300 bg-purple-50/50";
 
   // Check if there are any actual children (not just empty arrays or null values)
-  const hasItems = items.length > 0
+  const hasItems = items.length > 0;
 
   return (
     <div
@@ -35,6 +37,5 @@ export function DroppableZone({ id, children, className = "", style, items }: Dr
         </div>
       )}
     </div>
-  )
+  );
 }
-

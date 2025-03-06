@@ -3,6 +3,7 @@ import { useDroppable } from "@dnd-kit/core";
 
 interface DroppableContentAreaProps {
   children: React.ReactNode;
+
   className?: string;
 }
 

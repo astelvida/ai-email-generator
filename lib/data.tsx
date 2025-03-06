@@ -1,72 +1,113 @@
 import {
+  AlignHorizontalSpaceAround,
   Columns2,
   Columns3,
   Columns4,
-  LayoutGrid,
-  LayoutTemplateIcon,
-  LucideContainer,
+  LucideIcon,
   PanelLeftIcon,
   PanelRightIcon,
+  PanelsLeftBottomIcon,
+  PanelsRightBottomIcon,
   RectangleHorizontal,
-  Rows2Icon,
+  SquareSplitHorizontalIcon,
 } from "lucide-react";
 
-import {
-  FrameIcon,
-  ImageIcon,
-  MousePointerClickIcon,
-  PanelTopIcon,
-  Share2Icon,
-  SquareSplitVerticalIcon,
-  TypeIcon,
-} from "lucide-react";
-import { Instagram, Facebook, Twitter, TikTok } from "@/components/BrandIcons";
-import { BlockType as BlockType, LayoutType } from "./types";
+import { ImageIcon, MousePointerClickIcon, SquareSplitVerticalIcon, TypeIcon } from "lucide-react";
+import { BlockType } from "./types";
 
-export const layouts: LayoutType[] = [
+interface LayoutElement {
+  name: string;
+  type: string;
+  templateColumns: number[];
+  style?: React.CSSProperties;
+}
+
+export interface LayoutOption extends LayoutElement {
+  label: string;
+  icon: LucideIcon;
+}
+
+export const layouts: LayoutOption[] = [
   {
-    name: "equal-one",
+    name: "container",
     type: "layout-one-column-empty",
+    templateColumns: [12],
+    label: "Container",
     icon: RectangleHorizontal,
-    label: "Full Width",
-    columnsGrid: [12],
+    elementType: "layout",
   },
   {
     name: "equal-two",
     type: "layout-two-columns-empty",
-    icon: Columns2,
+    templateColumns: [6, 6],
     label: "2 Columns",
-    columnsGrid: [6, 6],
+    icon: Columns2,
+    elementType: "layout",
   },
   {
     name: "equal-three",
     type: "layout-three-columns-empty",
-    icon: Columns3,
+    templateColumns: [4, 4, 4],
     label: "3 Columns",
-    columnsGrid: [4, 4, 4],
+    icon: Columns3,
+    elementType: "layout",
   },
   {
     name: "equal-four",
     type: "layout-four-columns-empty",
-    icon: Columns4,
+    templateColumns: [3, 3, 3, 3],
     label: "4 Columns",
-    columnsGrid: [3, 3, 3, 3],
-  },
-  {
-    name: "small-large",
-    type: "layout-three-columns-9-3-empty",
-    icon: PanelLeftIcon,
-    label: "3 columns 9-3",
-    columnsGrid: [9, 3],
+    icon: Columns4,
+    elementType: "layout",
   },
   {
     name: "large-small",
-    type: "layout-three-columns-3-9-empty",
+    type: "layout-two-columns-9-3-empty",
+    templateColumns: [9, 3],
+    label: "quarter end",
     icon: PanelRightIcon,
-    label: "3 columns 3-9",
-    columnsGrid: [3, 9],
+    elementType: "layout",
   },
-  // { id: "small-medium-small", type: "layout-three-columns-3-6-3-empty", icon: LayoutTemplateIcon, label: "3 columns 3-6-3", columns: [3, 6, 3] },
+  {
+    name: "small-large",
+    type: "layout-two-columns-3-9-empty",
+    templateColumns: [3, 9],
+    label: "quarter start",
+    icon: PanelLeftIcon,
+    elementType: "layout",
+  },
+  {
+    name: "small-small-medium",
+    type: "layout-three-columns-3-3-6-empty",
+    templateColumns: [3, 3, 6],
+    label: "2 quarter + half",
+    icon: PanelsRightBottomIcon,
+    elementType: "layout",
+  },
+  {
+    name: "medium-small-small",
+    type: "layout-three-columns-6-3-3-empty",
+    templateColumns: [6, 3, 3],
+    label: "half + 2 quarter",
+    icon: PanelsLeftBottomIcon,
+    elementType: "layout",
+  },
+  {
+    name: "small-medium-small",
+    type: "layout-three-columns-3-6-3-empty",
+    templateColumns: [3, 6, 3],
+    label: "quarter + half + quarter",
+    icon: SquareSplitHorizontalIcon,
+    elementType: "layout",
+  },
+  {
+    name: "tiny-large-tiny",
+    type: "layout-three-columns-2-8-2-empty",
+    templateColumns: [2, 8, 2],
+    label: "tiny + large + tiny",
+    icon: AlignHorizontalSpaceAround,
+    elementType: "layout",
+  },
 ];
 
 // {
@@ -87,21 +128,11 @@ export const layouts: LayoutType[] = [
 // grid-columns: 3,
 // grid-columns: 3,
 
-// const layouts: LayoutOption[] = [
-//   { id: "full", name: "Full Width", columns: [12] },
-//   { id: "small-large", name: "Small + Large", columns: [3, 9] },
-//   { id: "medium-large", name: "Medium + Large", columns: [4, 8] },
-//   { id: "equal-two", name: "Equal Two Columns", columns: [6, 6] },
-//   { id: "large-small", name: "Large + Small", columns: [8, 4] },
-//   { id: "large-tiny", name: "Large + Tiny", columns: [9, 3] },
-//   { id: "equal-three", name: "Equal Three Columns", columns: [4, 4, 4] },
-//   { id: "squares-large", name: "Squares + Large", columns: [3, 3, 6] },
-//   { id: "small-medium-small", name: "Small + Medium + Small", columns: [3, 6, 3] },
-// ];
-
 export const blocks: BlockType[] = [
   {
-    type: "button",
+    name: "button",
+    type: "block-button",
+    elementType: "block",
     label: "Button",
     icon: MousePointerClickIcon,
     text: "Sample Button",
@@ -118,7 +149,9 @@ export const blocks: BlockType[] = [
     },
   },
   {
-    type: "text",
+    name: "text",
+    type: "block-text",
+    elementType: "block",
     label: "Text",
     icon: TypeIcon,
     text: "Write something here",
@@ -133,7 +166,9 @@ export const blocks: BlockType[] = [
     },
   },
   {
-    type: "image",
+    name: "image",
+    type: "block-image",
+    elementType: "block",
     label: "Image",
     icon: ImageIcon,
     imageUrl: "/default-image.png",
@@ -150,7 +185,9 @@ export const blocks: BlockType[] = [
   },
 
   {
-    type: "divider",
+    name: "divider",
+    type: "block-divider",
+    elementType: "block",
     label: "Divider",
     icon: SquareSplitVerticalIcon,
     style: {

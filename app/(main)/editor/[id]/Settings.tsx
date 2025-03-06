@@ -65,7 +65,7 @@ export function Settings({
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>
-      <div className="max-h-[calc(100vh-3rem)] space-y-4 overflow-y-auto p-4">
+      <div className="space-y-4 overflow-y-auto p-4">
         {selectedElement.type === "text" && (
           <>
             <div className="space-y-2">

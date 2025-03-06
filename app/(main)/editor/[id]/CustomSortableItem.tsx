@@ -1,24 +1,29 @@
-import type React from "react";
+import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import type React from "react";
 
-interface SortableItemProps {
+interface CustomSortableItemProps {
   id: string;
   children: React.ReactNode;
   data?: Record<string, unknown> | undefined;
+  className?: string;
 }
 
-export function SortableItem({ id, children, data }: SortableItemProps) {
+export type CustomSortableItemType = "layout" | "column" | "block";
+
+export function CustomSortableItem({ id, data, children, className }: CustomSortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
     useSortable({
       id,
       data: {
         ...data,
+        elementType: data?.elementType,
       },
     });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 999 : "auto",
@@ -30,7 +35,10 @@ export function SortableItem({ id, children, data }: SortableItemProps) {
       {...attributes}
       {...listeners}
       style={style}
-      className={`relative mb-4 cursor-grab active:cursor-grabbing ${isSorting ? "z-10" : ""}`}
+      className={cn(
+        `relative cursor-grab hover:bg-purple-200 active:cursor-grabbing ${isSorting ? "z-10" : ""}`,
+        className,
+      )}
     >
       {children}
     </div>

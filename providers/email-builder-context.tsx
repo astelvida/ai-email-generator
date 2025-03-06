@@ -1,8 +1,9 @@
 "use client";
 
 import type React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { createContext, useContext, useState } from "react";
+import { nanoid } from "@/lib/utils";
+
 // import type { BuilderElement } from "@/lib/types";
 
 type BuilderElement = {
@@ -126,7 +127,7 @@ export function EmailBuilderProvider({ children }: { children: React.ReactNode }
   const addElement = (element: BuilderElement) => {
     const { type, label, ...data } = element;
     const newElement = {
-      id: uuidv4(),
+      id: nanoid(),
       type,
       label,
     };

@@ -1,97 +1,72 @@
 "use client";
 
-import { SortableContext, useSortable, rectSortingStrategy } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { Layout } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Plus, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getElementComponent } from "./ElementRenderer";
-import { SortableItem } from "./SortableItem";
-
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useMemo } from "react";
+import { ContentBlock } from "./ContentBlock";
+import { DeleteButton } from "./DeleteButton";
 interface LayoutContainerProps {
-  id: string;
-  layout: any;
-  index: number;
-  handleRemove: (id: string, index: number) => void;
+  layout: Layout;
+  removeLayout: () => void;
+  activeLayout: string;
 }
 
-export function LayoutContainer({ id, layout, index, handleRemove }: LayoutContainerProps) {
-  console.log("layout", layout);
+export function LayoutContainer({
+  layout,
+  removeLayout,
+  activeLayout,
+  setActiveColumn,
+}: LayoutContainerProps) {
+  const columnsIds = useMemo(
+    () => layout.columns?.map((column: Column) => column.id),
+    [layout.columns],
+  );
 
-  const blocksIds = layout.columns?.map((block, blockIndex) => `${index}-${blockIndex}`);
-
-  const gridColsProp = {
-    1: "grid-cols-1",
-    2: "grid-cols-2",
-    3: "grid-cols-3",
-    4: "grid-cols-4",
-  };
-
-  console.log("gridColsProp", {
-    display: "grid",
-    gap: "1rem",
-    gridTemplateColumns: layout.columns.map((column) => `${column["grid-columns"]}fr`).join(" "),
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: layout.id,
+    data: {
+      ...layout,
+    },
   });
 
-  return (
-    <SortableItem
-      id={id}
-      data={{
-        type: layout.type,
-        id: layout.id,
-        index,
-      }}
-    >
-      <div className="group relative m-4 border-2 border-gray-200 bg-white shadow-sm transition-colors hover:border-purple-500">
-        <Button
-          variant="destructive"
-          size="sm"
-          className="absolute -right-3 -top-3 h-7 w-7 rounded-full bg-red-500 p-0 text-white hover:bg-red-600"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            handleRemove(id as string, index);
-          }}
-        >
-          <Trash2 className="h-4 w-4" />x<span className="sr-only">Remove layout</span>
-        </Button>
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 999 : "auto",
+  };
 
-        <div
-          style={{
-            display: "grid",
-            gap: "1rem",
-            gridTemplateColumns: layout.columnsGrid.map((col) => `${col}fr`).join(" "),
-          }}
-        >
-          <SortableContext items={blocksIds} strategy={rectSortingStrategy}>
-            {layout.columns?.map((column, columnIndex) => (
-              <SortableItem
-                key={blocksIds[columnIndex]}
-                id={blocksIds[columnIndex]}
-                data={{
-                  id: column.id,
-                  type: column.type,
-                  parentIndex: index,
-                  index: columnIndex,
-                }}
-              >
-                <div
-                  className={`relative min-h-[100px] rounded-lg border-2 border-dashed border-purple-300 bg-purple-50 p-4 transition-colors`}
-                >
-                  {!column ? (
-                    <div className="flex flex-col items-center justify-center gap-2 text-center text-purple-500">
-                      <Plus className="h-6 w-6" />
-                      <p className="text-sm">Drop content blocks here</p>
-                    </div>
-                  ) : (
-                    getElementComponent(column)
-                  )}
-                </div>
-              </SortableItem>
-            ))}
-          </SortableContext>
-        </div>
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      className={cn(
+        "group relative border-0 bg-white px-4 py-2 transition-colors hover:border-2 hover:border-purple-500 hover:bg-opacity-50 active:border-dashed",
+        activeLayout === layout.id && "border-3 border-fuchsia-500",
+      )}
+    >
+      <DeleteButton removeElement={removeLayout} />
+      <div
+        style={{
+          display: "grid",
+          gap: "2px",
+          gridTemplateColumns: layout.columns?.map((col) => `${col.gridColumn}fr`).join(" "),
+        }}
+      >
+        <SortableContext items={columnsIds}>
+          {columnsIds?.map((columnId, columnIndex) => (
+            <ContentBlock
+              key={columnId}
+              setActiveColumn={setActiveColumn}
+              column={layout.columns?.find((column) => column.id === columnId)}
+            />
+          ))}
+        </SortableContext>
       </div>
-    </SortableItem>
+    </div>
   );
 }

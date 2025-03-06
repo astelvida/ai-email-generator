@@ -9,7 +9,7 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 export const getElementComponent = (block: BlockType) => {
-  switch (block?.type) {
+  switch (block?.name) {
     case "button":
       return <ButtonComponent {...block} />;
     case "text":
@@ -22,23 +22,3 @@ export const getElementComponent = (block: BlockType) => {
       return null;
   }
 };
-
-export function BlockContainer({ block, parentIndex }: { block: BlockType; parentIndex: number }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id: block.id as UniqueIdentifier,
-    data: {
-      parentIndex: parentIndex,
-    },
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {getElementComponent(block)}
-    </div>
-  );
-}

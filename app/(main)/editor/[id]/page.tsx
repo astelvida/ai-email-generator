@@ -23,10 +23,8 @@ export default async function EmailBuilderPage(props: EmailBuilderPageProps) {
 
   return (
     <div className="flex h-screen flex-col">
-      <div className="h-screen bg-background">
-        <TopBar />
-        <EmailBuilder />
-      </div>
+      <TopBar />
+      <EmailBuilder />
     </div>
   );
 }

@@ -1,10 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
-
-const data = [
+export const SAMPLE_TEMPLATE = [
   {
     columns: [
       {
-        "grid-columns": 12,
+        gridColumn: 12,
         modules: [
           {
             type: "mailup-bee-newsletter-modules-heading",
@@ -201,7 +199,7 @@ const data = [
             uuid: "db488b27-65e4-47f9-9929-6ad702baa6be",
           },
         ],
-        "grid-columns": 8,
+        gridColumn: 8,
         uuid: "dea07a5c-e6cb-4a77-8a00-4ed139f4fe6e",
       },
       {
@@ -318,7 +316,7 @@ const data = [
             uuid: "d0dfe9f0-6845-44b5-9da9-14b062cdc396",
           },
         ],
-        "grid-columns": 4,
+        gridColumn: 4,
         uuid: "1eb49ea5-93b2-424e-a92d-68c0cb5e0991",
       },
     ],
@@ -514,7 +512,7 @@ const data = [
             uuid: "c753d440-0c09-468e-9bd0-6f66572cea96",
           },
         ],
-        "grid-columns": 4,
+        gridColumn: 4,
         uuid: "b0151db5-9525-42ad-b9b0-6baf37693d1f",
       },
       {
@@ -530,7 +528,7 @@ const data = [
           "padding-top": "5px",
         },
         modules: [],
-        "grid-columns": 4,
+        gridColumn: 4,
         uuid: "fce8bc42-25e9-44d8-9fbf-3ea7bce2fa17",
       },
       {
@@ -546,7 +544,7 @@ const data = [
           "padding-top": "5px",
         },
         modules: [],
-        "grid-columns": 4,
+        gridColumn: 4,
         uuid: "581f6452-749b-4ebb-aa62-70c36551c65e",
       },
     ],
@@ -603,7 +601,7 @@ const data = [
           "padding-top": "5px",
         },
         modules: [],
-        "grid-columns": 6,
+        gridColumn: 6,
         uuid: "9f058046-1abf-4b97-8609-2db631e867e3",
       },
       {
@@ -619,7 +617,7 @@ const data = [
           "padding-top": "5px",
         },
         modules: [],
-        "grid-columns": 3,
+        gridColumn: 3,
         uuid: "20e23ba1-77e2-4d35-bef8-a5f30878a076",
       },
       {
@@ -635,7 +633,7 @@ const data = [
           "padding-top": "5px",
         },
         modules: [],
-        "grid-columns": 3,
+        gridColumn: 3,
         uuid: "01678773-0417-4c91-8bfa-68eadd2db8d3",
       },
     ],
@@ -645,7 +643,7 @@ const data = [
   {
     columns: [
       {
-        "grid-columns": 12,
+        gridColumn: 12,
         modules: [
           {
             descriptor: {
@@ -740,513 +738,385 @@ const data = [
   },
 ];
 
-type BuilderRow = {
-  uuid: string;
-  type:
-    | "layout-columns-12"
-    | "layout-columns-6-6"
-    | "layout-columns-3-9"
-    | "layout-columns-4-4-4"
-    | "layout-columns-6-3-3"
-    | "layout-columns-3-6-3"
-    | "layout-columns-4-4-4-4"
-    | "layout-columns-3-3-6"
-    | "layout-columns-9-3-3"
-    | "layout-columns-12-empty  ";
-  columns: BuilderColumn[];
-  style: any;
-};
-
-type BuilderColumn = {
-  uuid: string;
-  type: "column";
-  "grid-columns": 1 | 2 | 3 | 4 | 6 | 8 | 9 | 12;
-  style: any;
-  blocks: BuilderBlock[];
-};
-
-type BuilderBlock = {
-  uuid: string;
-  type: string;
-  style: any;
-  descriptor: any;
-};
-
-export const SAMPLE_TEMPLATE = {
-  name: "Root",
-  type: "root",
-  id: "2358218",
-  rows: [
+export const SAMPLE_BLOCK_DESCRIPTORS = [
+  [
     {
-      uuid: "0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-      id: "row-0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-      style: {},
-      type: "one-column-empty", // ENDS IN EMPTY
-      columns: [
-        {
-          uuid: "0947b2c1-9d51-43de-8464-970e95afb7f9",
-          id: "column-0947b2c1-9d51-43de-8464-970e95afb7f9",
-          type: "column",
-          style: {},
-          "grid-columns": 12, // has grid-columns
-          blocks: [
-            {
-              id: "block-0947b2c1-9d51-43de-8464-970e95afb7f9",
-              label: "Heading",
-              type: "block-heading",
-              descriptor: {
-                text: "HEADING TEXT",
-              },
-              style: {},
-            },
-            {
-              label: "Paragraph",
-              type: "block-paragraph",
-              descriptor: {
-                text: "PARAGRAPH TEXT",
-              },
-              style: {},
-              id: "block-39bdf784-e4ac-4bce-a2d9-3c77fe3083fa",
-            },
-            {
-              label: "Button",
-              type: "block-button",
-              descriptor: {
-                text: "BUTTON TEXT",
-              },
-              style: {},
-              id: "block-214597b0-5b56-40ae-bdce-c5b6617f281c",
-            },
-          ],
+      name: "image",
+      descriptor: {
+        image: {
+          alt: "",
+          src: "https://84b0db12e2.imgdist.com/pub/bfra/qwdeb1h6/yv9/c5b/8ju/524a7956-244c-4f60-95b9-92bb155021f9.png",
+          href: "",
+          target: "_blank",
+          width: "64px",
+          height: "64px",
+          percWidth: "100",
+          dynamicSrc: "",
         },
-      ],
+        style: {
+          width: "100%",
+          "border-radius": "2px",
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        computedStyle: {
+          class: "center autowidth",
+          width: "64px",
+          hideContentOnMobile: false,
+        },
+        mobileStyle: {},
+      },
+      id: "db488b27-65e4-47f9-9929-6ad702baa6be",
     },
     {
-      style: {},
-      type: "three-columns-empty",
-      id: "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-      columns: [
-        {
-          type: "column",
-          "grid-columns": 4,
-          blocks: [],
-          style: {},
-          id: "column-b0151db5-9525-42ad-b9b0-6baf37693d1f",
+      name: "paragraph",
+      descriptor: {
+        paragraph: {
+          html: "<p>TEXTE</p>",
+          style: {
+            color: "#101112",
+            "font-size": "16px",
+            "font-family": "inherit",
+            "font-weight": "400",
+            "line-height": "120%",
+            "text-align": "left",
+            direction: "ltr",
+            "letter-spacing": "0px",
+          },
+          computedStyle: {
+            linkColor: "#7747FF",
+            paragraphSpacing: "16px",
+          },
         },
-        {
-          type: "column",
-          "grid-columns": 4,
-          blocks: [],
-          style: {},
-          id: "column-fce8bc42-25e9-44d8-9fbf-3ea7bce2fa17",
+        style: {
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
         },
-        {
-          type: "column",
-          "grid-columns": 4,
-          blocks: [],
-          style: {},
-          id: "column-581f6452-749b-4ebb-aa62-70c36551c65e",
+        mobileStyle: {},
+        computedStyle: {
+          hideContentOnAmp: false,
+          hideContentOnHtml: false,
+          hideContentOnDesktop: false,
+          hideContentOnMobile: false,
         },
-      ],
+      },
+      id: "99f5b1e4-4024-446b-8156-6f6f857d2d2a",
     },
     {
-      style: {},
-      id: "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-      type: "three-columns-6-3-3-empty",
-      columns: [
-        {
-          type: "column",
-          "grid-columns": 6,
-          blocks: [
+      name: "divider",
+      descriptor: {
+        divider: {
+          style: {
+            "border-top": "4px solid #dddddd",
+            width: "100%",
+          },
+        },
+        style: {
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          align: "center",
+          hideContentOnMobile: false,
+        },
+      },
+      id: "93e75619-9dda-4a35-b315-c9fb275c7aed",
+    },
+    {
+      name: "list",
+      descriptor: {
+        list: {
+          tag: "ul",
+          html: "<ul><li>Listee</li><li>babay</li><li>hey</li></ul>",
+          style: {
+            color: "#101112",
+            "font-size": "16px",
+            "font-family": "inherit",
+            "font-weight": "400",
+            "line-height": "120%",
+            "text-align": "left",
+            direction: "ltr",
+            "letter-spacing": "0px",
+          },
+          computedStyle: {
+            linkColor: "#7747FF",
+            liSpacing: "0px",
+            liIndent: "30px",
+            listStyleType: "revert",
+            listStylePosition: "inside",
+            startList: "1",
+          },
+        },
+        style: {
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          hideContentOnAmp: false,
+          hideContentOnHtml: false,
+          hideContentOnDesktop: false,
+          hideContentOnMobile: false,
+        },
+      },
+      id: "d0dfe9f0-6845-44b5-9da9-14b062cdc396",
+    },
+    {
+      name: "icons",
+      descriptor: {
+        computedStyle: {
+          hideContentOnDesktop: false,
+          hideContentOnMobile: false,
+          iconHeight: "32px",
+          iconSpacing: {
+            "padding-bottom": "5px",
+            "padding-left": "5px",
+            "padding-right": "6px",
+            "padding-top": "5px",
+          },
+          itemsSpacing: "0px",
+        },
+        iconsList: {
+          icons: [
             {
-              label: "Heading",
-              type: "block-heading",
-              descriptor: {
-                text: "HEADING TEXT",
-              },
-              style: {},
-              id: "block-9f078046-1abf-4b97-8609-2db631e867e4",
+              alt: "Beefree Logo",
+              height: "120px",
+              href: "http://designedwithbeefree.com/",
+              id: "14920125-9164-49a9-bbc0-c4aef02e5f14",
+              image: "https://d1oco4z2z1fhwp.cloudfront.net/assets/Beefree-logo.png",
+              target: "_blank",
+              text: "Designed with Beefree",
+              textPosition: "right",
+              title: "Designed with Beefree",
+              width: "126px",
             },
           ],
-          style: {},
-          id: "column-9f058046-1abf-4b97-8609-2db631e8a67e3",
         },
-        {
-          type: "column",
-          "grid-columns": 3,
-          blocks: [
-            {
-              label: "Heading",
-              type: "block-heading",
-              descriptor: {
-                text: "HEADING TEXT",
-              },
-              style: {},
-              id: "block-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-            },
-            {
-              label: "Paragraph",
-              type: "block-paragraph",
-              descriptor: {
-                text: "PARAGRAPH TEXT",
-              },
-              style: {},
-              id: "block-01678773-0417-4c91-8bfa-68eadd2db8d3",
-            },
-          ],
-          style: {},
-          id: "column-20e23ba1-77e2-4d35-bef8-a5f30878a076",
+        style: {
+          color: "#1e0e4b",
+          "font-family": "'Inter', sans-serif",
+          "font-size": "15px",
+          "padding-bottom": "5px",
+          "padding-left": "0px",
+          "padding-right": "0px",
+          "padding-top": "5px",
+          "text-align": "center",
         },
-        {
-          "grid-columns": 3,
-          type: "column",
-          blocks: [
-            {
-              label: "Button",
-              type: "block-button",
-              descriptor: {
-                text: "BUTTON TEXT",
-              },
-              style: {},
-              id: "block-01678773-0417-4c91-8bfa-68eadd2db8r4",
-            },
-          ],
-          style: {},
-          id: "column-01678773-0417-4c91-8bfa-68eadd2db8d3",
+      },
+      id: "02aff5de-a889-4c69-8747-c33b24d151a6",
+    },
+    {
+      name: "heading",
+      descriptor: {
+        heading: {
+          title: "h1",
+          text: '<span class="tinyMce-placeholder">my title!</span>',
+          style: {
+            color: "#7747FF",
+            "font-size": "38px",
+            "font-family": "inherit",
+            "link-color": "#7747FF",
+            "line-height": "120%",
+            "text-align": "left",
+            direction: "ltr",
+            "font-weight": "700",
+            "letter-spacing": "0px",
+          },
         },
-      ],
+        style: {
+          width: "100%",
+          "text-align": "center",
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+      },
+      id: "0947b2c1-9d51-43de-8464-970e95afb7f9",
+    },
+    {
+      name: "paragraph",
+      descriptor: {
+        paragraph: {
+          html: "<p>SUBTTITLE PARAGRAPOH</p>",
+          style: {
+            color: "#101112",
+            "font-size": "16px",
+            "font-family": "inherit",
+            "font-weight": "400",
+            "line-height": "120%",
+            "text-align": "left",
+            direction: "ltr",
+            "letter-spacing": "0px",
+          },
+          computedStyle: {
+            linkColor: "#7747FF",
+            paragraphSpacing: "16px",
+          },
+        },
+        style: {
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          hideContentOnAmp: false,
+          hideContentOnHtml: false,
+          hideContentOnDesktop: false,
+          hideContentOnMobile: false,
+        },
+      },
+      id: "39bdf784-e4ac-4bce-a2d9-3c77fe3083fa",
+    },
+    {
+      name: "button",
+      descriptor: {
+        button: {
+          label:
+            '<div class="txtTinyMce-wrapper" style="font-family: inherit;" data-mce-style="font-family: inherit;"><p style="word-break: break-word;" data-mce-style="word-break: break-word;">Sign Up</p></div>',
+          href: "",
+          target: "_blank",
+          style: {
+            "font-family": "inherit",
+            "font-size": "16px",
+            "font-weight": "400",
+            "background-color": "#7747FF",
+            "border-radius": "4px",
+            "border-top": "0px solid transparent",
+            "border-right": "0px solid transparent",
+            "border-bottom": "0px solid transparent",
+            "border-left": "0px solid transparent",
+            color: "#ffffff",
+            "line-height": "200%",
+            "letter-spacing": "0px",
+            "padding-top": "5px",
+            "padding-right": "20px",
+            "padding-bottom": "5px",
+            "padding-left": "20px",
+            width: "auto",
+            "max-width": "100%",
+            direction: "ltr",
+          },
+        },
+        style: {
+          "text-align": "center",
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          width: 96,
+          height: 42,
+          hideContentOnMobile: false,
+        },
+      },
+      id: "528fb188-c86f-46f8-9059-941723f3d322",
+    },
+    {
+      name: "button",
+      descriptor: {
+        button: {
+          label:
+            '<div class="txtTinyMce-wrapper" style="font-family: inherit;" data-mce-style="font-family: inherit;"><p style="word-break: break-word;" data-mce-style="word-break: break-word;">Sign In</p></div>',
+          href: "",
+          target: "_blank",
+          style: {
+            "font-family": "inherit",
+            "font-size": "16px",
+            "font-weight": "400",
+            "background-color": "#7747FF",
+            "border-radius": "4px",
+            "border-top": "0px solid transparent",
+            "border-right": "0px solid transparent",
+            "border-bottom": "0px solid transparent",
+            "border-left": "0px solid transparent",
+            color: "#ffffff",
+            "line-height": "200%",
+            "letter-spacing": "0px",
+            "padding-top": "5px",
+            "padding-right": "20px",
+            "padding-bottom": "5px",
+            "padding-left": "20px",
+            width: "auto",
+            "max-width": "100%",
+            direction: "ltr",
+          },
+        },
+        style: {
+          "text-align": "center",
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          width: 89,
+          height: 42,
+          hideContentOnMobile: false,
+        },
+      },
+      id: "214597b0-5b56-40ae-bdce-c5b6617f281c",
+    },
+    {
+      name: "button",
+      descriptor: {
+        button: {
+          label:
+            '<div class="txtTinyMce-wrapper" style="font-family: inherit;" data-mce-style="font-family: inherit;"><p style="word-break: break-word;" data-mce-style="word-break: break-word;">Sign Out</p></div>',
+          href: "",
+          target: "_blank",
+          style: {
+            "font-family": "inherit",
+            "font-size": "16px",
+            "font-weight": "400",
+            "background-color": "#7747FF",
+            "border-radius": "4px",
+            "border-top": "0px solid transparent",
+            "border-right": "0px solid transparent",
+            "border-bottom": "0px solid transparent",
+            "border-left": "0px solid transparent",
+            color: "#ffffff",
+            "line-height": "200%",
+            "letter-spacing": "0px",
+            "padding-top": "5px",
+            "padding-right": "20px",
+            "padding-bottom": "5px",
+            "padding-left": "20px",
+            width: "auto",
+            "max-width": "100%",
+            direction: "ltr",
+          },
+        },
+        style: {
+          "text-align": "center",
+          "padding-top": "10px",
+          "padding-right": "10px",
+          "padding-bottom": "10px",
+          "padding-left": "10px",
+        },
+        mobileStyle: {},
+        computedStyle: {
+          width: 102,
+          height: 42,
+          hideContentOnMobile: false,
+        },
+      },
+      id: "c753d440-0c09-468e-9bd0-6f66572cea96",
     },
   ],
-};
-
-const MAPPING = {
-  root: {
-    id: "root",
-    type: "root",
-    index: 0,
-    depth: 0,
-    childrenIds: obj.rows.map((row) => row.id),
-  },
-};
-
-obj.rows.forEach(({ columns, type, ...row }, index) => {
-  // const rowId = `${uuidv4()}-row`;
-  MAPPING[row.id] = {
-    type: `layout-${type}`,
-    index: index,
-    depth: 1,
-    ...row,
-    parentId: "root",
-    childrenIds: columns.map((column) => column.id),
-  };
-
-  columns.forEach(({ type, blocks, ...column }, index) => {
-    MAPPING[column.id] = {
-      type: type || "column",
-      index: index,
-      depth: 2,
-      ...column,
-      parentId: row.id,
-      childrenIds: blocks.map((block) => block.id),
-    };
-
-    blocks.forEach(({ type, ...block }, index) => {
-      MAPPING[block.id] = {
-        type: type,
-        index: index,
-        depth: 3,
-        ...block,
-        parentId: column.id,
-      };
-    });
-  });
-});
-
-console.log(MAPPING);
-
-export const SAMPLE_TEMPLATE_NORMALIZED = {
-  root: {
-    id: "root",
-    type: "root",
-    index: 0,
-    depth: 0,
-    childrenIds: [
-      "row-0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-      "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-      "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-    ],
-  },
-  "row-0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5": {
-    type: "layout-one-column-empty",
-    index: 0,
-    depth: 1,
-    uuid: "0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-    id: "row-0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-    style: {},
-    parentId: "root",
-    childrenIds: ["column-0947b2c1-9d51-43de-8464-970e95afb7f9"],
-  },
-  "column-0947b2c1-9d51-43de-8464-970e95afb7f9": {
-    type: "column",
-    index: 0,
-    depth: 2,
-    uuid: "0947b2c1-9d51-43de-8464-970e95afb7f9",
-    id: "column-0947b2c1-9d51-43de-8464-970e95afb7f9",
-    style: {},
-    "grid-columns": 12,
-    parentId: "row-0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5",
-    childrenIds: [
-      "block-0947b2c1-9d51-43de-8464-970e95afb7f9",
-      "block-39bdf784-e4ac-4bce-a2d9-3c77fe3083fa",
-      "block-214597b0-5b56-40ae-bdce-c5b6617f281c",
-    ],
-  },
-  "block-0947b2c1-9d51-43de-8464-970e95afb7f9": {
-    type: "block-heading",
-    index: 0,
-    depth: 3,
-    id: "block-0947b2c1-9d51-43de-8464-970e95afb7f9",
-    label: "Heading",
-    descriptor: { text: "HEADING TEXT" },
-    style: {},
-    parentId: "column-0947b2c1-9d51-43de-8464-970e95afb7f9",
-  },
-  "block-39bdf784-e4ac-4bce-a2d9-3c77fe3083fa": {
-    type: "block-paragraph",
-    index: 1,
-    depth: 3,
-    label: "Paragraph",
-    descriptor: { text: "PARAGRAPH TEXT" },
-    style: {},
-    id: "block-39bdf784-e4ac-4bce-a2d9-3c77fe3083fa",
-    parentId: "column-0947b2c1-9d51-43de-8464-970e95afb7f9",
-  },
-  "block-214597b0-5b56-40ae-bdce-c5b6617f281c": {
-    type: "block-button",
-    index: 2,
-    depth: 3,
-    label: "Button",
-    descriptor: { text: "BUTTON TEXT" },
-    style: {},
-    id: "block-214597b0-5b56-40ae-bdce-c5b6617f281c",
-    parentId: "column-0947b2c1-9d51-43de-8464-970e95afb7f9",
-  },
-  "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499": {
-    type: "layout-three-columns-empty",
-    index: 1,
-    depth: 1,
-    style: {},
-    id: "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-    parentId: "root",
-    childrenIds: [
-      "column-b0151db5-9525-42ad-b9b0-6baf37693d1f",
-      "column-fce8bc42-25e9-44d8-9fbf-3ea7bce2fa17",
-      "column-581f6452-749b-4ebb-aa62-70c36551c65e",
-    ],
-  },
-  "column-b0151db5-9525-42ad-b9b0-6baf37693d1f": {
-    type: "column",
-    index: 0,
-    depth: 2,
-    "grid-columns": 4,
-    style: {},
-    id: "column-b0151db5-9525-42ad-b9b0-6baf37693d1f",
-    parentId: "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-    childrenIds: [],
-  },
-  "column-fce8bc42-25e9-44d8-9fbf-3ea7bce2fa17": {
-    type: "column",
-    index: 1,
-    depth: 2,
-    "grid-columns": 4,
-    style: {},
-    id: "column-fce8bc42-25e9-44d8-9fbf-3ea7bce2fa17",
-    parentId: "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-    childrenIds: [],
-  },
-  "column-581f6452-749b-4ebb-aa62-70c36551c65e": {
-    type: "column",
-    index: 2,
-    depth: 2,
-    "grid-columns": 4,
-    style: {},
-    id: "column-581f6452-749b-4ebb-aa62-70c36551c65e",
-    parentId: "row-6f1d7cd5-9daf-4684-a35e-0b8e7bfa7499",
-    childrenIds: [],
-  },
-  "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d": {
-    type: "layout-three-columns-6-3-3-empty",
-    index: 2,
-    depth: 1,
-    style: {},
-    id: "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-    parentId: "root",
-    childrenIds: [
-      "column-9f058046-1abf-4b97-8609-2db631e8a67e3",
-      "column-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-      "column-01678773-0417-4c91-8bfa-68eadd2db8d3",
-    ],
-  },
-  "column-9f058046-1abf-4b97-8609-2db631e8a67e3": {
-    type: "column",
-    index: 0,
-    depth: 2,
-    "grid-columns": 6,
-    style: {},
-    id: "column-9f058046-1abf-4b97-8609-2db631e8a67e3",
-    parentId: "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-    childrenIds: ["block-9f078046-1abf-4b97-8609-2db631e867e4"],
-  },
-  "block-9f078046-1abf-4b97-8609-2db631e867e4": {
-    type: "block-heading",
-    index: 0,
-    depth: 3,
-    label: "Heading",
-    descriptor: { text: "HEADING TEXT" },
-    style: {},
-    id: "block-9f078046-1abf-4b97-8609-2db631e867e4",
-    parentId: "column-9f058046-1abf-4b97-8609-2db631e8a67e3",
-  },
-  "column-20e23ba1-77e2-4d35-bef8-a5f30878a076": {
-    type: "column",
-    index: 1,
-    depth: 2,
-    "grid-columns": 3,
-    style: {},
-    id: "column-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-    parentId: "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-    childrenIds: [
-      "block-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-      "block-01678773-0417-4c91-8bfa-68eadd2db8d3",
-    ],
-  },
-  "block-20e23ba1-77e2-4d35-bef8-a5f30878a076": {
-    type: "block-heading",
-    index: 0,
-    depth: 3,
-    label: "Heading",
-    descriptor: { text: "HEADING TEXT" },
-    style: {},
-    id: "block-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-    parentId: "column-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-  },
-  "block-01678773-0417-4c91-8bfa-68eadd2db8d3": {
-    type: "block-paragraph",
-    index: 1,
-    depth: 3,
-    label: "Paragraph",
-    descriptor: { text: "PARAGRAPH TEXT" },
-    style: {},
-    id: "block-01678773-0417-4c91-8bfa-68eadd2db8d3",
-    parentId: "column-20e23ba1-77e2-4d35-bef8-a5f30878a076",
-  },
-  "column-01678773-0417-4c91-8bfa-68eadd2db8d3": {
-    type: "column",
-    index: 2,
-    depth: 2,
-    "grid-columns": 3,
-    style: {},
-    id: "column-01678773-0417-4c91-8bfa-68eadd2db8d3",
-    parentId: "row-6ffee72d-8ec1-4db3-bdfd-b92e9d5e155d",
-    childrenIds: ["block-01678773-0417-4c91-8bfa-68eadd2db8r4"],
-  },
-  "block-01678773-0417-4c91-8bfa-68eadd2db8r4": {
-    type: "block-button",
-    index: 0,
-    depth: 3,
-    label: "Button",
-    descriptor: { text: "BUTTON TEXT" },
-    style: {},
-    id: "block-01678773-0417-4c91-8bfa-68eadd2db8r4",
-    parentId: "column-01678773-0417-4c91-8bfa-68eadd2db8d3",
-  },
-};
-
-// const buildTree = ({ childrenIds, ...currNode }) => {
-//   if (!childrenIds || childrenIds.length === 0) {
-//     return currNode;
-//   }
-
-//   const children = [];
-
-//   for (const currChildId of childrenIds) {
-//     const result = buildTree(HASH[currChildId]);
-//     children.push(result);
-//   }
-
-//   return { ...currNode, children };
-// };
-
-// function buildArray(data) {
-//   const nodes = [];
-
-//   // Convert object to array and keep track of child relationships
-//   for (const key in data) {
-//     const node = { ...data[key] };
-//     if (node.childrenIds) {
-//       node.children = node.childrenIds;
-//       delete node.childrenIds;
-//     }
-//     nodes.push(node);
-//   }
-
-//   return nodes;
-// }
-
-// // Example usage
-// // const result = buildTree(HASH["root"]);
-// // console.log(JSON.stringify(result, null, 2));
-// // const array = buildArray(result.children);
-// // console.log(JSON.stringify(array, null, 2));
-
-// const kschd = {
-//   rows: "children",
-//   columns: "children",
-//   modules: "children",
-// };
-
-// function dfs(currentNode) {
-//   const visited = {};
-
-//   const nodesList = [];
-//   const stack = [];
-
-//   stack.push(currentNode);
-
-//   while (stack.length) {
-//     const nextNode = stack.pop();
-
-//     if (visited[nextNode.uuid]) {
-//       continue;
-//     }
-
-//     visited[nextNode.uuid] = true;
-
-//     const key =
-//       "children" in nextNode
-//         ? "children"
-//         : "rows" in nextNode
-//           ? "rows"
-//           : "columns" in nextNode
-//             ? "columns"
-//             : "modules" in nextNode
-//               ? "modules"
-//               : null;
-
-//     if (!key) {
-//       continue;
-//     }
-
-//     nodesList.push(nextNode);
-//     console.log(key, nextNode[key]?.length, nextNode.uuid);
-
-//     for (let i = nextNode[key].length - 1; i >= 0; i--) {
-//       stack.push(nextNode[key][i]);
-//     }
-//   }
-
-//   console.log("nodesList", nodesList);
-
-//   console.log("visited", visited);
-//   return nodesList;
-// }
+];

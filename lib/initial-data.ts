@@ -1,9 +1,7 @@
 "use client";
 
 import type React from "react";
-// import { createContext, useContext, useEffect, useState } from "react";
-// import { v4 as uuidv4 } from "uuid";
-import type { BuilderElement } from "@/lib/types";
+// import { createContext, useContext, useEffect, useState } from "react";import type { BuilderElement } from "@/lib/types";
 import { Love_Light } from "next/font/google";
 
 type BuilderElement = {
