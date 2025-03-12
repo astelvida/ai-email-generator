@@ -1,15 +1,13 @@
 "use client";
+import ButtonComponent from "@/components/elements/ButtonComponent";
+import DividerComponent from "@/components/elements/DividerComponent";
+import ImageComponent from "@/components/elements/ImageComponent";
+import TextComponent from "@/components/elements/TextComponent";
 import { BlockType } from "@/lib/types";
-import ButtonComponent from "../../../../components/elements/ButtonComponent";
-import TextComponent from "../../../../components/elements/TextComponent";
-import ImageComponent from "../../../../components/elements/ImageComponent";
-import DividerComponent from "../../../../components/elements/DividerComponent";
-import { useSortable } from "@dnd-kit/sortable";
-import { UniqueIdentifier } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 
 export const getElementComponent = (block: BlockType) => {
-  switch (block?.name) {
+  const type = block.type.startsWith("block") ? block?.type.split("-")[1] : block?.type;
+  switch (type) {
     case "button":
       return <ButtonComponent {...block} />;
     case "text":

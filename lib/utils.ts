@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { customAlphabet } from "nanoid";
+import { twMerge } from "tailwind-merge";
 // 7-character random string
 export const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -30,13 +30,7 @@ export function createRange<T = number>(
   %c - CSS styling for custom console output
  */
 
-const pprintStyles = [
-  "color: #ff6b6b",
-  "background: #eafaff",
-  "padding: 4px 8px",
-  "border-radius: 4px",
-  "font-weight: bold",
-].join(";");
+const pprintStyles = ["color: #ff6b6b", "background: #eafaff", "font-weight: bold"].join(";");
 
 export const pprint = (value: unknown, label: string = ""): void => {
   // Use CSS styling and special formatting for better console output
@@ -46,16 +40,49 @@ export const pprint = (value: unknown, label: string = ""): void => {
     console.log("%c%s %o", pprintStyles, `${label}:`, value);
   } else {
     const formattedValue = String(value);
-    console.log(
-      "%c%s %c%s",
-      pprintStyles,
-      `${label}:`,
-      "color: #4dabf7;background: #ff0",
-      formattedValue,
-    );
+    console.log("%c%s %c%s", pprintStyles, `${label}:`, "color: #4dabf7", formattedValue);
   }
   // Add separator for better readability
   // console.log("%c----------------------", "color: #868e96");
+};
+
+/**
+ * Prints multiple value-label pairs on the same line
+ * @param pairs - Array of objects with value and label properties
+ * @example
+ * pprintMultiple([
+ *   { value: "hello", label: "Greeting" },
+ *   { value: 42, label: "Answer" },
+ *   { value: { foo: "bar" }, label: "Object" }
+ * ]);
+ */
+export const pprintMultiple = (pairs: Array<[string, unknown]>): void => {
+  let formatString = "";
+  const formatValues: unknown[] = [];
+
+  pairs.forEach((pair, index) => {
+    const [label, value] = pair;
+    // Add label styling
+    formatString += "%c" + label + ": ";
+    formatValues.push(pprintStyles);
+
+    // Add value with appropriate formatting
+    if (typeof value === "object") {
+      formatString += "%o";
+    } else {
+      formatString += "%c%s";
+      formatValues.push("color: #4dabf7");
+    }
+
+    formatValues.push(value);
+
+    // Add separator between pairs (except for the last one)
+    if (index < pairs.length - 1) {
+      formatString += " | ";
+    }
+  });
+
+  console.log(formatString, ...formatValues);
 };
 
 export function pprintObject(value: unknown, label: string): void {

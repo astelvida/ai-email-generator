@@ -1,5 +1,4 @@
-import React from "react";
-import { ElementStyle, ElementOuterStyle } from "@/lib/types/config.types";
+import { ElementStyle } from "@/lib/types/config.types";
 
 interface ButtonComponentProps {
   style: ElementStyle;
@@ -7,7 +6,7 @@ interface ButtonComponentProps {
   url?: string;
 }
 
-function ButtonComponent({ style, text, url }: ButtonComponentProps) {
+function ButtonComponent({ style, text = "UNSTYLED Button", url }: ButtonComponentProps) {
   return (
     <a href={url} style={style}>
       {text}

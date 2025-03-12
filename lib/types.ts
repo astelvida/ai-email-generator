@@ -56,34 +56,34 @@ export interface ImageElementStyle extends ElementStyle {
 
 export interface BlockType {
   id?: string;
-  name?: string;
-  elementType?: "block";
-  type: "button" | "text" | "image" | "divider";
+  type: "button" | "text" | "image" | "divider" | "icons" | "social-icons";
   style?: React.CSSProperties;
   text?: string;
+  content?: string;
   url?: string;
   imageUrl?: string;
   alt?: string;
-  label: string;
-  icon: LucideIcon;
+  label?: string;
+  icon?: LucideIcon;
+  brand?: "facebook" | "instagram" | "tiktok" | "linkedin";
 }
 
-export interface ContentBlockType {
-  id: string | number;
+export interface ColumnType {
+  id: string;
   gridColumn: number;
-  type: "column" | "container";
-  elementType: "column";
-  style?: React.CSSProperties;
-  blocks: BlockType[];
+  type: "column";
+  // style?: React.CSSProperties;
+  // blocks: BlockType[];
 }
 
 // Types for Layout.tsx
 export interface LayoutType {
+  id: string;
   name: string;
   type: string;
   label: string;
   templateColumns: number[];
-  style: React.CSSProperties;
-  icon: LucideIcon;
-  columns: ContentBlockType[];
+  style?: React.CSSProperties;
+  icon?: LucideIcon;
+  columns: ColumnType[];
 }

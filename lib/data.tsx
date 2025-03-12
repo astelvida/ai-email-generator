@@ -9,9 +9,11 @@ import {
   PanelsLeftBottomIcon,
   PanelsRightBottomIcon,
   RectangleHorizontal,
+  Share2Icon,
   SquareSplitHorizontalIcon,
 } from "lucide-react";
 
+import { FacebookLogo, InstagramLogo, TikTokLogo } from "@/components/BrandIcons";
 import { ImageIcon, MousePointerClickIcon, SquareSplitVerticalIcon, TypeIcon } from "lucide-react";
 import { BlockType } from "./types";
 
@@ -27,22 +29,20 @@ export interface LayoutOption extends LayoutElement {
   icon: LucideIcon;
 }
 
-export const layouts: LayoutOption[] = [
+export const layoutOptions: LayoutOption[] = [
   {
     name: "container",
     type: "layout-one-column-empty",
     templateColumns: [12],
     label: "Container",
     icon: RectangleHorizontal,
-    elementType: "layout",
   },
   {
-    name: "equal-two",
     type: "layout-two-columns-empty",
     templateColumns: [6, 6],
+    name: "equal-two",
     label: "2 Columns",
     icon: Columns2,
-    elementType: "layout",
   },
   {
     name: "equal-three",
@@ -50,7 +50,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [4, 4, 4],
     label: "3 Columns",
     icon: Columns3,
-    elementType: "layout",
   },
   {
     name: "equal-four",
@@ -58,7 +57,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [3, 3, 3, 3],
     label: "4 Columns",
     icon: Columns4,
-    elementType: "layout",
   },
   {
     name: "large-small",
@@ -66,7 +64,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [9, 3],
     label: "quarter end",
     icon: PanelRightIcon,
-    elementType: "layout",
   },
   {
     name: "small-large",
@@ -74,7 +71,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [3, 9],
     label: "quarter start",
     icon: PanelLeftIcon,
-    elementType: "layout",
   },
   {
     name: "small-small-medium",
@@ -82,7 +78,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [3, 3, 6],
     label: "2 quarter + half",
     icon: PanelsRightBottomIcon,
-    elementType: "layout",
   },
   {
     name: "medium-small-small",
@@ -90,7 +85,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [6, 3, 3],
     label: "half + 2 quarter",
     icon: PanelsLeftBottomIcon,
-    elementType: "layout",
   },
   {
     name: "small-medium-small",
@@ -98,7 +92,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [3, 6, 3],
     label: "quarter + half + quarter",
     icon: SquareSplitHorizontalIcon,
-    elementType: "layout",
   },
   {
     name: "tiny-large-tiny",
@@ -106,7 +99,6 @@ export const layouts: LayoutOption[] = [
     templateColumns: [2, 8, 2],
     label: "tiny + large + tiny",
     icon: AlignHorizontalSpaceAround,
-    elementType: "layout",
   },
 ];
 
@@ -128,11 +120,10 @@ export const layouts: LayoutOption[] = [
 // grid-columns: 3,
 // grid-columns: 3,
 
-export const blocks: BlockType[] = [
+export const blockOptions: BlockType[] = [
   {
+    type: "button",
     name: "button",
-    type: "block-button",
-    elementType: "block",
     label: "Button",
     icon: MousePointerClickIcon,
     text: "Sample Button",
@@ -149,9 +140,8 @@ export const blocks: BlockType[] = [
     },
   },
   {
-    name: "text",
-    type: "block-text",
-    elementType: "block",
+    type: "text",
+    name: "paragraph",
     label: "Text",
     icon: TypeIcon,
     text: "Write something here",
@@ -166,9 +156,8 @@ export const blocks: BlockType[] = [
     },
   },
   {
+    type: "image",
     name: "image",
-    type: "block-image",
-    elementType: "block",
     label: "Image",
     icon: ImageIcon,
     imageUrl: "/default-image.png",
@@ -185,9 +174,8 @@ export const blocks: BlockType[] = [
   },
 
   {
+    type: "divider",
     name: "divider",
-    type: "block-divider",
-    elementType: "block",
     label: "Divider",
     icon: SquareSplitVerticalIcon,
     style: {
@@ -196,29 +184,82 @@ export const blocks: BlockType[] = [
       width: "100%",
     },
   },
+  {
+    type: "icons", // TODO: change to social icons
+    name: "social-icons",
+    label: "Social Icons",
+    icon: Share2Icon,
+    icons: [
+      {
+        icon: InstagramLogo,
+        url: "https://www.instagram.com",
+      },
+      {
+        icon: FacebookLogo,
+        url: "https://www.facebook.com",
+      },
+      {
+        icon: TikTokLogo, // TODO: change to tiktok icon
+        url: "https://www.tiktok.com",
+      },
+    ],
+    style: {
+      width: 40,
+      height: 40,
+    },
+  },
 ];
 
-// {
-//   type: "social-icons",
-//   label: "Social Icons",
-//   icon: Share2Icon,
-//   icons: [
-//     {
-//       icon: Instagram,
-//       url: "https://www.instagram.com",
-//     },
-//     {
-//       icon: Facebook,
-//       url: "https://www.facebook.com",
-//     },
-//     {
-//       icon: TikTok,
-//       url: "https://www.tiktok.com",
-//     },
-//   ],
-//   style: {
-//     width: 40,
-//     height: 40,
-//   },
-// },
-export default blocks;
+// Block options for the sidebar
+export const BLOCK_OPTIONS = [
+  { icon: "T≡", label: "TITLE" },
+  { icon: "≡¶", label: "PARAGRAPH" },
+  { icon: "≡", label: "LIST" },
+  { icon: "▣", label: "IMAGE" },
+  { icon: "⬚", label: "BUTTON" },
+  { icon: "◫", label: "TABLE" },
+  { icon: "═", label: "DIVIDER" },
+  { icon: "↕", label: "SPACER" },
+  { icon: "+", label: "SOCIAL" },
+  { icon: "</>", label: "HTML" },
+  { icon: "▶", label: "VIDEO" },
+  { icon: "★", label: "ICONS" },
+];
+
+// Default content for block types
+export const getDefaultContentForBlockType = (blockType: string) => {
+  switch (blockType) {
+    case "TITLE":
+      return "New Title";
+    case "PARAGRAPH":
+      return "New Paragraph";
+    case "LIST":
+      return ["New List Item", "Second List Item", "Third List Item"];
+    case "SOCIAL":
+      return [];
+    case "IMAGE":
+      return "";
+    case "VIDEO":
+      return "";
+    case "GIF":
+      return "";
+    case "HTML":
+      return "<div>New HTML Block</div>";
+    case "BUTTON":
+      return "Click Me";
+    case "TABLE":
+      return [
+        ["Header 1", "Header 2", "Header 3"],
+        ["Cell 1", "Cell 2", "Cell 3"],
+        ["Cell 4", "Cell 5", "Cell 6"],
+      ];
+    case "DIVIDER":
+      return "";
+    case "SPACER":
+      return 20; // height in pixels
+    case "ICONS":
+      return ["star", "heart", "thumbs-up"];
+    default:
+      return "";
+  }
+};

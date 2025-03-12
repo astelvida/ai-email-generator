@@ -1,7 +1,6 @@
-import * as React from "react";
 import type { SVGProps } from "react";
 
-export const Instagram = (props: SVGProps<SVGSVGElement>) => (
+export const InstagramLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
@@ -17,7 +16,7 @@ export const Instagram = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const Facebook = (props: SVGProps<SVGSVGElement>) => (
+export const FacebookLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 36 36"
@@ -40,7 +39,7 @@ export const Facebook = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const LinkedIn = (props: SVGProps<SVGSVGElement>) => (
+export const LinkedInLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width="1em"
     height="1em"
@@ -56,7 +55,7 @@ export const LinkedIn = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const TikTok = (props: SVGProps<SVGSVGElement>) => (
+export const TikTokLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="xMidYMid"
@@ -77,7 +76,7 @@ export const TikTok = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const Github = (props: SVGProps<SVGSVGElement>) => (
+export const GithubLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 256 250"
     width="1em"

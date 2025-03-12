@@ -1,0 +1,443 @@
+{
+  "configs": {
+    "contentDialog": [],
+    "clientConfig": {
+      "defaultTab": "content",
+      "editorFonts": {
+        "showDefaultFonts": false,
+        "customFontsCount": 22
+      },
+      "disableColorHistory": true,
+      "disableBaseColors": false,
+      "workspace": {
+        "hideStageToggle": false
+      },
+      "trackChanges": true,
+      "contentDefaults": {
+        "general": {
+          "backgroundColor": "#ffffff",
+          "contentAreaBackgroundColor": "transparent",
+          "contentAreaWidth": "600px",
+          "defaultFont": "Arial, Helvetica, sans-serif",
+          "linkColor": "#7747ff"
+        },
+        "title": {
+          "blockOptions": {
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px"
+          }
+        },
+        "paragraph": {
+          "styles": {
+            "color": "#444a5b",
+            "fontSize": "16px",
+            "direction": "ltr",
+            "linkColor": "#7747ff",
+            "textAlign": "left",
+            "fontFamily": "inherit",
+            "fontWeight": "400",
+            "lineHeight": "120%",
+            "letterSpacing": "0px",
+            "paragraphSpacing": "16px"
+          },
+          "blockOptions": {
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px"
+          }
+        },
+        "button": {
+          "width": "auto",
+          "styles": {
+            "fontSize": "16px",
+            "color": "#ffffff",
+            "maxWidth": "100%",
+            "borderTop": "0px solid transparent",
+            "borderLeft": "0px solid transparent",
+            "fontFamily": "inherit",
+            "fontWeight": "400",
+            "lineHeight": "200%",
+            "paddingTop": "5px",
+            "borderRight": "0px solid transparent",
+            "paddingLeft": "20px",
+            "borderBottom": "0px solid transparent",
+            "borderRadius": "4px",
+            "paddingRight": "20px",
+            "paddingBottom": "5px",
+            "backgroundColor": "#7747ff"
+          },
+          "blockOptions": {
+            "align": "center",
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px",
+            "hideContentOnMobile": false
+          }
+        },
+        "divider": {
+          "line": "1px solid #dddddd",
+          "align": "center",
+          "width": "100%",
+          "blockOptions": {
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px",
+            "hideContentOnMobile": false
+          }
+        },
+        "spacer": {
+          "height": "60px",
+          "blockOptions": {
+            "hideContentOnMobile": false
+          }
+        },
+        "form": {
+          "styles": {
+            "width": "100%",
+            "fontSize": "16px",
+            "fontFamily": "inherit"
+          },
+          "blockOptions": {
+            "align": "center",
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px",
+            "backgroundColor": "transparent",
+            "hideContentOnMobile": false,
+            "hideContentOnDesktop": false
+          },
+          "fieldsOptions": {
+            "color": "#000000",
+            "borderTop": "1px solid transparent",
+            "borderLeft": "1px solid transparent",
+            "paddingTop": "5px",
+            "borderRight": "1px solid transparent",
+            "paddingLeft": "5px",
+            "borderBottom": "1px solid transparent",
+            "borderRadius": "4px",
+            "outlineColor": "#7747ff",
+            "paddingRight": "5px",
+            "paddingBottom": "5px",
+            "backgroundColor": "#ffffff"
+          },
+          "labelsOptions": {
+            "align": "left",
+            "color": "#101218",
+            "position": "top",
+            "fontStyle": "",
+            "fontWeight": "",
+            "lineHeight": "200%",
+            "letterSpacing": "0px",
+            "minWidth": "100%"
+          },
+          "buttonsOptions": {
+            "align": "center",
+            "color": "#ffffff",
+            "width": "100%",
+            "maxWidth": "100%",
+            "borderTop": "0px solid transparent",
+            "marginTop": "0px",
+            "borderLeft": "0px solid transparent",
+            "lineHeight": "200%",
+            "paddingTop": "5px",
+            "borderRight": "0px solid transparent",
+            "marginRight": "0px",
+            "margingLeft": "0px",
+            "paddingLeft": "20px",
+            "borderBottom": "0px solid transparent",
+            "borderRadius": "4px",
+            "marginBottom": "0px",
+            "paddingRight": "20px",
+            "paddingBottom": "5px",
+            "backgroundColor": "#7747ff",
+            "fontStyle": "",
+            "fontWeight": "",
+            "letterSpacing": "0px"
+          }
+        },
+        "list": {
+          "styles": {
+            "color": "#101218",
+            "fontSize": "16px",
+            "liIndent": "30px",
+            "listType": "ul",
+            "direction": "ltr",
+            "liSpacing": "0px",
+            "linkColor": "#7747ff",
+            "startList": "1",
+            "textAlign": "left",
+            "fontFamily": "inherit",
+            "fontWeight": "400",
+            "lineHeight": "120%",
+            "letterSpacing": "0px",
+            "listStyleType": "revert",
+            "listStylePosition": "inside"
+          },
+          "blockOptions": {
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px"
+          }
+        },
+        "menu": {
+          "styles": {
+            "color": "#101218",
+            "fontSize": "16px",
+            "linkColor": "#7747ff",
+            "fontFamily": "inherit"
+          },
+          "hamburger": {
+            "mobile": false,
+            "iconSize": "36px",
+            "iconType": "normal",
+            "backgroundColor": "#000000",
+            "foregroundColor": "#ffffff"
+          },
+          "blockOptions": {
+            "align": "center",
+            "layout": "horizontal",
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px",
+            "hideContentOnMobile": false,
+            "hideContentOnDesktop": false
+          },
+          "itemsSpacing": {
+            "paddingTop": "5px",
+            "paddingLeft": "5px",
+            "paddingRight": "5px",
+            "paddingBottom": "5px"
+          }
+        },
+        "social": {
+          "icons": [
+            {
+              "id": "facebook",
+              "name": "facebook",
+              "text": "",
+              "type": "follow",
+              "image": {
+                "alt": "Facebook",
+                "src": "https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/facebook@2x.png",
+                "href": "https://www.facebook.com/",
+                "title": "facebook",
+                "prefix": "facebook"
+              }
+            },
+            {
+              "id": "twitter",
+              "name": "twitter",
+              "text": "",
+              "type": "follow",
+              "image": {
+                "alt": "Twitter",
+                "src": "https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/twitter@2x.png",
+                "href": "https://www.twitter.com/",
+                "title": "twitter",
+                "prefix": "twitter"
+              }
+            },
+            {
+              "id": "linkedin",
+              "name": "linkedin",
+              "text": "",
+              "type": "follow",
+              "image": {
+                "alt": "Linkedin",
+                "src": "https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/linkedin@2x.png",
+                "href": "https://www.linkedin.com/",
+                "title": "linkedin",
+                "prefix": "linkedin"
+              }
+            },
+            {
+              "id": "instagram",
+              "name": "instagram",
+              "text": "",
+              "type": "follow",
+              "image": {
+                "alt": "Instagram",
+                "src": "https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/instagram@2x.png",
+                "href": "https://www.instagram.com/",
+                "title": "instagram",
+                "prefix": "instagram"
+              }
+            }
+          ],
+          "blockOptions": {
+            "align": "center",
+            "paddingTop": "10px",
+            "paddingLeft": "10px",
+            "paddingRight": "10px",
+            "paddingBottom": "10px",
+            "hideContentOnMobile": false
+          }
+        }
+      },
+      "titleDefaultStyles": {
+        "h1": {
+          "color": "#1e0e4b",
+          "direction": "ltr",
+          "font-size": "38px",
+          "link-color": "#7747ff",
+          "text-align": "left",
+          "font-family": "inherit",
+          "font-weight": "700",
+          "line-height": "120%",
+          "letter-spacing": "0px"
+        },
+        "h2": {
+          "color": "#1e0e4b",
+          "direction": "ltr",
+          "font-size": "30px",
+          "link-color": "#7747ff",
+          "text-align": "left",
+          "font-family": "inherit",
+          "font-weight": "700",
+          "line-height": "120%",
+          "letter-spacing": "0px"
+        },
+        "h3": {
+          "color": "#1e0e4b",
+          "direction": "ltr",
+          "font-size": "24px",
+          "link-color": "#7747ff",
+          "text-align": "left",
+          "font-family": "inherit",
+          "font-weight": "700",
+          "line-height": "120%",
+          "letter-spacing": "0px"
+        }
+      },
+      "onChange": "__client_function",
+      "onWarning": "__client_function",
+      "onStart": "__client_function",
+      "startOrigin": "[npm] @mailupinc/bee-plugin",
+      "onInit": "__client_function",
+      "specialLinksCount": 12,
+      "mergeTagsCount": 17,
+      "mergeContentsCount": 0,
+      "rowDisplayConditionsCount": 0,
+      "hasDefaultForm": true,
+      "defaultColorsCount": 0,
+      "advancedPermissions": []
+    },
+    "appMode": "nl",
+    "clientId": "BeeFree",
+    "plan": "Gold",
+    "clientProfile": {
+      "TitleEnabled": false,
+      "TopBarEnabled": false,
+      "FSPMoveEnabled": false,
+      "FaviconEnabled": false,
+      "HistoryEnabled": true,
+      "SubjectEnabled": false,
+      "LanguageEnabled": true,
+      "LoggingDisabled": false,
+      "SaveRowsEnabled": false,
+      "EditImageEnabled": true,
+      "FormBlockEnabled": false,
+      "HtmlBlockEnabled": true,
+      "ListBlockEnabled": true,
+      "MenuBlockEnabled": true,
+      "PreheaderEnabled": false,
+      "TextBlockEnabled": false,
+      "AnalyticsDisabled": false,
+      "CommentingEnabled": false,
+      "FreePhotosEnabled": true,
+      "FreeVideosEnabled": false,
+      "IconsBlockEnabled": true,
+      "TableBlockEnabled": true,
+      "TopBarHelpEnabled": true,
+      "TopBarLogoEnabled": false,
+      "TopBarSaveEnabled": true,
+      "VideoBlockEnabled": true,
+      "CustomIconsEnabled": true,
+      "DescriptionEnabled": false,
+      "SpacerBlockEnabled": true,
+      "DynamicImageEnabled": true,
+      "HeadingBlockEnabled": true,
+      "TopBarCustomHelpUrl": "https://docs.beefree.io",
+      "CarouselBlockEnabled": false,
+      "SanitizeHTMLDisabled": false,
+      "TopBarPreviewEnabled": true,
+      "ParagraphBlockEnabled": true,
+      "TopBarAutoSaveEnabled": true,
+      "TopBarSendTestEnabled": true,
+      "BackgroundImageEnabled": true,
+      "BackgroundVideoEnabled": false,
+      "DarkModePreviewEnabled": true,
+      "HostedSavedRowsEnabled": false,
+      "EmojiTextToolbarEnabled": true,
+      "MergeTagsPreviewEnabled": false,
+      "MultiDeviceStageEnabled": true,
+      "ButtonHoverEffectEnabled": true,
+      "CardsStyleWidgetsEnabled": true,
+      "RowRoundedCornersEnabled": true,
+      "ContentAreaPaddingEnabled": true,
+      "DoNotStackOnMobileEnabled": true,
+      "BodyBackgroundImageEnabled": true,
+      "HideContentOnMobileEnabled": true,
+      "ImageRoundedCornersEnabled": true,
+      "RowDisplayConditionEnabled": false,
+      "ImportExternalAssetsEnabled": true,
+      "ReverseStackOnMobileEnabled": true,
+      "RowVerticalAlignmentEnabled": true,
+      "TopBarSaveAsTemplateEnabled": false,
+      "ConfirmOverwriteModalEnabled": false,
+      "MergeTagsEnhancementsEnabled": true,
+      "MultiLanguageTemplateEnabled": false,
+      "BackgroundVideoPickerButtonEnabled": false,
+      "UploadLimitInBytes": 20971520,
+      "CloudStorageService": true,
+      "NewBumperEnabled": true,
+      "NewCoeditEnabled": true,
+      "OutlookButtonEnabled": false,
+      "OutlookButtonNewEnabled": false
+    },
+    "addOns": [
+      {
+        "uid": "686279a5-1006-47a2-8d7b-6a69004e18ab",
+        "name": "Stickers",
+        "type": "image",
+        "enabled": true,
+        "checksum": "6058d77f46e95e3d7b449f7c703b9371"
+      },
+      {
+        "uid": "b17dc240-b226-415c-af71-246fc51bd088",
+        "name": "Gifs",
+        "type": "image",
+        "enabled": true,
+        "checksum": "e366154685f65c6afbb78b107b68091a"
+      },
+      {
+        "uid": "ai-integration",
+        "name": "AI Writing Assistant",
+        "type": "widget",
+        "checksum": "6c65904dbc411cb135afb882fe960253"
+      }
+    ],
+    "customAddOns": [],
+    "permissions": {
+      "CanLockRows": false,
+      "CanLockModules": false,
+      "CanEditLockedRows": false,
+      "CanEditLockedModules": false,
+      "CanSelectDisplayConditions": true,
+      "CanEditDisplayConditions": true,
+      "CanRemoveDisplayConditions": true
+    }
+  },
+  "checksum": "a34031441816a19e4be61278d0fc21d6",
+  "metrics": {
+    "startupTime": 612.1000000014901
+  }
+}

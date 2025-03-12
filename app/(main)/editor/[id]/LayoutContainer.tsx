@@ -1,72 +1,157 @@
 "use client";
 
-import { Layout } from "@/lib/types";
+import { BlockType, ColumnType } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { Plus } from "lucide-react";
 import { useMemo } from "react";
-import { ContentBlock } from "./ContentBlock";
 import { DeleteButton } from "./DeleteButton";
+import { getElementComponent } from "./ElementRenderer";
+import { SortableBlock } from "./SortableBlock";
+import { SortableLayout } from "./SortableLayout";
+
 interface LayoutContainerProps {
-  layout: Layout;
+  layout: any;
+  blocks: BlockType[];
+  index: number;
   removeLayout: () => void;
-  activeLayout: string;
+  removeBlock: (blockId: string) => void;
+  setSelectedElement: (blockId: string | null) => void;
+  selectedElement: string | null;
+  activeLayout: string | null;
+  activeColumnId: string | null;
 }
 
-export function LayoutContainer({
-  layout,
-  removeLayout,
-  activeLayout,
-  setActiveColumn,
-}: LayoutContainerProps) {
-  const columnsIds = useMemo(
-    () => layout.columns?.map((column: Column) => column.id),
-    [layout.columns],
-  );
+interface DroppableZoneProps {
+  id: string;
+  layoutId: string;
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  index: number;
+  gridColumn: number;
+}
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: layout.id,
+const DroppableColumn = (props: DroppableZoneProps) => {
+  const { setNodeRef, isOver } = useDroppable({
+    id: props.id,
     data: {
-      ...layout,
+      type: "column",
+      column: {
+        id: props.id,
+        index: props.index,
+        layoutId: props.layoutId,
+        gridColumn: props.gridColumn,
+      },
     },
   });
+  const borderClass = isOver ? "border-teal-500 bg-teal-200" : "border-teal-300 bg-teal-50";
 
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
-    zIndex: isDragging ? 999 : "auto",
-  };
+  // Check if there are any actual children (not just empty arrays or null values)
 
   return (
     <div
       ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
+      style={props.style}
       className={cn(
-        "group relative border-0 bg-white px-4 py-2 transition-colors hover:border-2 hover:border-purple-500 hover:bg-opacity-50 active:border-dashed",
-        activeLayout === layout.id && "border-3 border-fuchsia-500",
+        "relative min-h-[100px] rounded-lg border-2 border-dashed p-4 transition-colors",
+        borderClass,
+        props.className,
+      )}
+    >
+      {props.children}
+    </div>
+  );
+};
+
+export function LayoutContainer({
+  layout,
+  blocks,
+  removeLayout,
+  removeBlock,
+  setSelectedElement,
+  selectedElement,
+  activeLayout,
+  activeColumnId,
+  index,
+}: LayoutContainerProps) {
+  const gridStyle = useMemo(() => {
+    return {
+      display: "grid",
+      gap: "4px",
+      gridTemplateColumns: layout.columns
+        ?.map((col: ColumnType) => `${col.gridColumn}fr`)
+        .join(" "),
+    };
+  }, [layout.columns]);
+
+  return (
+    <SortableLayout
+      id={layout.id}
+      data={layout}
+      className={cn(
+        "px-2 py-2 hover:border-2 hover:border-purple-500 hover:bg-opacity-50 active:border-dashed",
+        selectedElement?.id === layout.id && "border-4 border-amber-500",
       )}
     >
       <DeleteButton removeElement={removeLayout} />
-      <div
-        style={{
-          display: "grid",
-          gap: "2px",
-          gridTemplateColumns: layout.columns?.map((col) => `${col.gridColumn}fr`).join(" "),
-        }}
-      >
-        <SortableContext items={columnsIds}>
-          {columnsIds?.map((columnId, columnIndex) => (
-            <ContentBlock
-              key={columnId}
-              setActiveColumn={setActiveColumn}
-              column={layout.columns?.find((column) => column.id === columnId)}
-            />
-          ))}
-        </SortableContext>
+
+      <div onClick={() => setSelectedElement(layout)} style={gridStyle}>
+        {layout.columns.map((column: ColumnType, columnIndex: number) => {
+          const columnBlocks = blocks.filter((block) => block.columnId === column.id);
+          const columnBlocksIds = columnBlocks.map((block) => block.id);
+
+          return (
+            <DroppableColumn
+              key={column.id}
+              id={column.id}
+              index={columnIndex}
+              layoutId={layout.id}
+              gridColumn={column.gridColumn}
+            >
+              {columnBlocksIds.length ? (
+                <SortableContext items={columnBlocksIds} strategy={verticalListSortingStrategy}>
+                  <div className="flex flex-col gap-2">
+                    {columnBlocks.map((block, blockIndex) => {
+                      return (
+                        <SortableBlock
+                          key={block.id}
+                          id={block.id}
+                          data={{
+                            ...block,
+                            layoutId: layout.id,
+                            columnId: column.id,
+                            columnIndex,
+                            layoutIndex: index,
+                            index: blockIndex,
+                          }}
+                          className={cn(
+                            "flex-1 border-2 p-2",
+                            selectedElement?.id === block.id && "border-4 border-amber-500",
+                          )}
+                        >
+                          <div
+                            className="flex-1 border-2 p-2"
+                            onClick={() => setSelectedElement(block)}
+                          >
+                            {getElementComponent(block)}
+                          </div>
+                        </SortableBlock>
+                      );
+                    })}
+                  </div>
+                </SortableContext>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-2 text-teal-500">
+                  <Plus className="h-6 w-6" />
+                  <p className="text-sm">Drop content blocks here</p>
+                </div>
+              )}
+            </DroppableColumn>
+          );
+        })}
       </div>
-    </div>
+    </SortableLayout>
   );
 }

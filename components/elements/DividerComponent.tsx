@@ -1,4 +1,3 @@
-import React from "react";
 import { ElementStyle } from "@/lib/types/config.types";
 
 interface DividerComponentProps {

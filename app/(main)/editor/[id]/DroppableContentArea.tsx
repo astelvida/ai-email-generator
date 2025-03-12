@@ -1,13 +1,8 @@
-import type React from "react";
+import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
+import type React from "react";
 
-interface DroppableContentAreaProps {
-  children: React.ReactNode;
-
-  className?: string;
-}
-
-export function DroppableContentArea({ children, className }: DroppableContentAreaProps) {
+export function DroppableContentArea(props: React.PropsWithChildren<{ className?: string }>) {
   const { setNodeRef, isOver } = useDroppable({
     id: "content-area",
   });
@@ -15,9 +10,13 @@ export function DroppableContentArea({ children, className }: DroppableContentAr
   return (
     <div
       ref={setNodeRef}
-      className={`flex-1 transition-colors ${isOver ? "bg-purple-300" : ""} ${className}`}
+      className={cn(
+        `flex-1 transition-colors`,
+        isOver && "border-2 border-dashed border-red-400 bg-red-50",
+        props.className ?? "",
+      )}
     >
-      {children}
+      {props.children}
     </div>
   );
 }
