@@ -1,142 +1,154 @@
 "use client";
 
-import { BlockType, ColumnType } from "@/lib/types";
+import { BlockElement, ColumnType, LayoutType } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useDroppable } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { closestCenter, useDroppable } from "@dnd-kit/core";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Plus } from "lucide-react";
-import { useMemo } from "react";
 import { DeleteButton } from "./DeleteButton";
-import { getElementComponent } from "./ElementRenderer";
+import { ElementPreview } from "./ElementPreview";
 import { SortableBlock } from "./SortableBlock";
 import { SortableLayout } from "./SortableLayout";
 
-interface LayoutContainerProps {
-  layout: any;
-  blocks: BlockType[];
-  index: number;
-  removeLayout: () => void;
-  removeBlock: (blockId: string) => void;
-  setSelectedElement: (blockId: string | null) => void;
-  selectedElement: string | null;
-  activeLayout: string | null;
-  activeColumnId: string | null;
-}
-
-interface DroppableZoneProps {
-  id: string;
-  layoutId: string;
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  index: number;
-  gridColumn: number;
-}
-
-const DroppableColumn = (props: DroppableZoneProps) => {
-  const { setNodeRef, isOver } = useDroppable({
-    id: props.id,
-    data: {
-      type: "column",
-      column: {
-        id: props.id,
-        index: props.index,
-        layoutId: props.layoutId,
-        gridColumn: props.gridColumn,
+export function SortableColumn(props: SortableColumnProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
+    useSortable({
+      id: props.id,
+      data: {
+        column: {
+          id: props.id,
+          layoutId: props.layoutId,
+          gridColumn: props.gridColumn,
+          type: "column",
+        },
+        type: "column",
       },
-    },
-  });
-  const borderClass = isOver ? "border-teal-500 bg-teal-200" : "border-teal-300 bg-teal-50";
+    });
 
-  // Check if there are any actual children (not just empty arrays or null values)
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 999 : "auto",
+  };
 
   return (
     <div
       ref={setNodeRef}
-      style={props.style}
+      onClick={props.onClick}
+      {...attributes}
+      {...listeners}
+      style={{ ...style, ...(props.style || {}) }}
       className={cn(
-        "relative min-h-[100px] rounded-lg border-2 border-dashed p-4 transition-colors",
-        borderClass,
+        `relative cursor-grab active:cursor-grabbing ${isSorting ? "z-10" : ""}`,
         props.className,
       )}
     >
       {props.children}
     </div>
   );
+}
+
+interface DroppableColumnProps {
+  id: string;
+  data: ColumnType;
+  children: React.ReactNode;
+  className?: string;
+}
+const DroppableColumn = ({ children, id, data, className }: DroppableColumnProps) => {
+  const { setNodeRef, isOver } = useDroppable({
+    id,
+    data: {
+      type: "column",
+      column: data,
+    },
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={cn(
+        "relative h-[100px] rounded-lg border-2 border-dashed border-teal-300 bg-teal-100/50 p-2 transition-colors hover:border-solid hover:bg-teal-100",
+        isOver ? "border-teal-500 bg-teal-200" : "",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 };
+
+interface LayoutContainerProps {
+  layout: LayoutType;
+  blocks: BlockElement[];
+  removeLayout: () => void;
+  removeBlock: (blockId: string) => void;
+  setSelectedElement: (blockId: string | null) => void;
+  selectedElement: string | null;
+}
 
 export function LayoutContainer({
   layout,
   blocks,
-  removeLayout,
-  removeBlock,
   setSelectedElement,
   selectedElement,
-  activeLayout,
-  activeColumnId,
-  index,
+  removeLayout,
+  removeBlock,
 }: LayoutContainerProps) {
-  const gridStyle = useMemo(() => {
-    return {
-      display: "grid",
-      gap: "4px",
-      gridTemplateColumns: layout.columns
-        ?.map((col: ColumnType) => `${col.gridColumn}fr`)
-        .join(" "),
-    };
-  }, [layout.columns]);
-
   return (
     <SortableLayout
       id={layout.id}
       data={layout}
       className={cn(
-        "px-2 py-2 hover:border-2 hover:border-purple-500 hover:bg-opacity-50 active:border-dashed",
-        selectedElement?.id === layout.id && "border-4 border-amber-500",
+        "hover:border-2 hover:border-purple-500 hover:bg-opacity-50",
+        selectedElement === layout.id && "border-4 border-amber-500",
       )}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setSelectedElement(layout.id);
+      }}
     >
       <DeleteButton removeElement={removeLayout} />
 
-      <div onClick={() => setSelectedElement(layout)} style={gridStyle}>
-        {layout.columns.map((column: ColumnType, columnIndex: number) => {
-          const columnBlocks = blocks.filter((block) => block.columnId === column.id);
-          const columnBlocksIds = columnBlocks.map((block) => block.id);
-
+      <div style={layout.gridStyle}>
+        {layout.columns.map((column: ColumnType) => {
+          const blocksInColumn = blocks.filter((block) => block?.columnId === column.id);
+          const blockIds = blocksInColumn.map((block) => block.id);
+          if (blockIds.find((id) => id === undefined)) {
+            console.warn("Some block ids are false", blockIds);
+            alert("Some block ids are false");
+          }
           return (
             <DroppableColumn
               key={column.id}
               id={column.id}
-              index={columnIndex}
-              layoutId={layout.id}
-              gridColumn={column.gridColumn}
+              data={{
+                ...column,
+              }}
             >
-              {columnBlocksIds.length ? (
-                <SortableContext items={columnBlocksIds} strategy={verticalListSortingStrategy}>
-                  <div className="flex flex-col gap-2">
-                    {columnBlocks.map((block, blockIndex) => {
+              {blockIds.length ? (
+                <SortableContext
+                  items={blockIds}
+                  strategy={verticalListSortingStrategy}
+                  collisionDetection={closestCenter}
+                >
+                  <div className="flex flex-col">
+                    {blocksInColumn.map((block) => {
                       return (
                         <SortableBlock
-                          key={block.id}
                           id={block.id}
-                          data={{
-                            ...block,
-                            layoutId: layout.id,
-                            columnId: column.id,
-                            columnIndex,
-                            layoutIndex: index,
-                            index: blockIndex,
+                          key={block.id}
+                          data={block}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setSelectedElement(block.id);
                           }}
-                          className={cn(
-                            "flex-1 border-2 p-2",
-                            selectedElement?.id === block.id && "border-4 border-amber-500",
-                          )}
+                          className={cn(selectedElement === block.id && "ring-2 ring-teal-700")}
                         >
-                          <div
-                            className="flex-1 border-2 p-2"
-                            onClick={() => setSelectedElement(block)}
-                          >
-                            {getElementComponent(block)}
-                          </div>
+                          <ElementPreview element={block} />
                         </SortableBlock>
                       );
                     })}

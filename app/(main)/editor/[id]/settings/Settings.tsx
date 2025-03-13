@@ -1,9 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -11,9 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Trash2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Bold } from "lucide-react";
 import type { BuilderElement } from "@/lib/types";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Trash2 } from "lucide-react";
 
 const fontOptions = [
   "Arial",

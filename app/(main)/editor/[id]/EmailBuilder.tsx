@@ -2,10 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn, nanoid, pprintMultiple } from "@/lib/utils";
+import { LAYOUT_OPTIONS, LayoutOption } from "@/lib/data";
+import { cn, nanoid } from "@/lib/utils";
 import { useViewStore } from "@/stores/view";
 import {
   DndContext,
+  DragCancelEvent,
   DragEndEvent,
   DragOverEvent,
   DragStartEvent,
@@ -21,9 +23,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { DroppableContentArea } from "./DroppableContentArea";
-import { ElementsSidebar } from "./ElementsSidebar";
+import { ElementsSidebar } from "./elements-sidebar/ElementsSidebar";
 import { EmptyState } from "./EmptyState";
 import { LayoutContainer } from "./LayoutContainer";
 import { Settings } from "./settings/Settings";
@@ -31,34 +34,34 @@ import { Settings } from "./settings/Settings";
 const createNewColumns = (layoutId: string, templateColumns: number[]) => {
   return templateColumns.map((gridColumn: number, index: number) => ({
     id: nanoid() + "-column",
+    type: "column",
     index,
     layoutId,
     gridColumn,
   }));
 };
 
-const createNewLayout = (data: any) => {
+const createNewLayout = (data: LayoutOption) => {
   const layoutId = nanoid() + "-layout";
   return {
     id: layoutId,
-    type: data.type,
-    name: data.name,
-    label: data.label,
-    templateColumns: data?.templateColumns,
-    columns: createNewColumns(layoutId, data.templateColumns),
+    ...data,
+    columns: createNewColumns(layoutId, data.columns),
   };
 };
 
-const createNewBlock = (
-  data: any,
-  { columnId, columnIndex, layoutId }: { columnId: string; columnIndex: number; layoutId: string },
-) => {
+type CreateNewBlockProps = {
+  data: any;
+  columnId: string;
+  layoutId: string;
+};
+
+const createNewBlock = ({ columnId, layoutId, ...data }: CreateNewBlockProps) => {
   return {
     id: nanoid() + "-block",
-    ...data,
     columnId,
-    columnIndex,
     layoutId,
+    ...data,
   };
 };
 
@@ -69,8 +72,7 @@ export function EmailBuilder() {
   const [layouts, setLayouts] = useState<any[]>([]);
   const [blocks, setBlocks] = useState<any[]>([]);
 
-  const [activeLayout, setActiveLayout] = useState<string | null>(null);
-  const [activeBlock, setActiveBlock] = useState<string | null>(null);
+  const [activeDraggable, setActiveDraggable] = useState<string | null>(null);
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
 
   const layoutIds = useMemo(
@@ -89,15 +91,18 @@ export function EmailBuilder() {
     }),
   );
 
-  useEffect(() => {
-    console.log(blocks);
-  }, [blocks]);
+  const selectedStuff = useMemo(() => {
+    return selectedElement?.endsWith("layout")
+      ? layouts.find((layout) => layout.id === selectedElement)
+      : blocks.find((block) => block.id === selectedElement);
+  }, [selectedElement, layouts, blocks]);
 
-  const addLayout = (layoutData: any) => {
+  const addLayout = (layoutData: LayoutOption) => {
+    const newLayout = createNewLayout(layoutData);
     setLayouts((prev) => {
-      const newLayout = createNewLayout(layoutData);
       return [...prev, newLayout];
     });
+    setSelectedElement(newLayout.id);
   };
 
   // remove layout
@@ -111,77 +116,34 @@ export function EmailBuilder() {
   };
 
   function handleDragStart(event: DragStartEvent) {
+    setSelectedElement(null);
+    console.log("DRAG START");
     const { active } = event;
 
-    if (active.data.current?.type === "layout") {
-      setActiveLayout(active.data.current?.layout.id);
-    } else if (active.data.current?.type === "block") {
-      setActiveBlock(active.data.current?.block.id);
+    if (active.id) {
+      console.log("ACTIVE ID", active.id);
+      setActiveDraggable(active.id.toString());
     }
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over) return;
-    if (active.id === over.id) return;
-
-    if (active.id.toString().startsWith("block")) {
-      const newBlock = createNewBlock(active.data.current?.block, {
-        columnId: over.id.toString(),
-        layoutId: over?.data.current?.column.layoutId,
-        columnIndex: over?.data.current?.column.index,
-      });
-      console.log("NEW BLOCK", newBlock);
-      setBlocks((blocks) => [...blocks, newBlock]);
-    }
-
-    if (active.data.current?.type !== "layout") {
-      return;
-    }
-
-    const isAddingLayout = active.data.current?.layout.type.endsWith("empty");
-
-    if (isAddingLayout && over.id === "content-area") {
-      console.log("ADD LAYOUT");
-      addLayout(active.data.current?.layout);
-    }
-
-    if (over.data.current?.type === "layout" && !activeLayout?.endsWith("empty")) {
-      console.log("MOVE LAYOUT");
-      setLayouts((layouts) => {
-        const activeIndex = layouts.findIndex((layout) => layout.id === active.id);
-        const overIndex = layouts.findIndex((layout) => layout.id === over?.id);
-        return arrayMove(layouts, activeIndex, overIndex);
-      });
-    }
-
-    setActiveLayout(null);
-    setActiveBlock(null);
-    setSelectedElement(null);
   }
 
   function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
-    if (!over) return;
-    if (active.id === over.id) return;
 
     const isActiveABlock = active.data.current?.type === "block";
-    if (!isActiveABlock || active.id.toString().startsWith("block")) {
+
+    if (!over || active.id === over?.id || !isActiveABlock) {
       return;
     }
+    // const isBlockOption = active.id.toString().startsWith("block");
+    const isOverABlock = over?.data.current?.type === "block";
+    const isOverAColumn = over?.data.current?.type === "column";
 
     console.log("DRAG OVER");
-    const isOverABlock = over?.data.current?.type === "block";
-
-    // SORTYBLOPCKS
+    // DRAG BLOCK OVER ANOTHER BLOCK
     if (isActiveABlock && isOverABlock) {
-      console.log("MOVE BLOCK");
       setBlocks((blocks) => {
         const activeIndex = blocks.findIndex((block) => block.id === active.id);
         const overIndex = blocks.findIndex((block) => block.id === over.id);
-
-        console.log("ACTIVE INDEX", activeIndex);
-        console.log("OVER INDEX", overIndex);
 
         if (active.data.current?.block.columnId !== over.data.current?.block.columnId) {
           const newBlocks = blocks.map((block, index) => {
@@ -189,7 +151,6 @@ export function EmailBuilder() {
               return {
                 ...block,
                 columnId: blocks[overIndex].columnId,
-                columnIndex: blocks[overIndex].columnIndex,
                 layoutId: blocks[overIndex].layoutId,
               };
             }
@@ -202,17 +163,9 @@ export function EmailBuilder() {
       });
     }
 
-    const isOverAColumn = over?.data.current?.type === "column";
-
+    // DRAG BLOCK OVER A COLUMN
     if (isActiveABlock && isOverAColumn) {
       console.log("MOVE BLOCK TO COLUMN");
-      pprintMultiple([
-        ["activeId", active.id],
-        ["overId", over?.id],
-      ]);
-      pprintMultiple([["over.data.current.column", over?.data.current?.column]]);
-      pprintMultiple([["active.data.current.block", active.data.current?.block]]);
-
       setBlocks((blocks) => {
         const activeIndex = blocks.findIndex((block) => block.id === active.id);
 
@@ -221,17 +174,84 @@ export function EmailBuilder() {
             return {
               ...block,
               columnId: over?.id.toString(),
-              columnIndex: over?.data.current?.column.index,
               layoutId: over?.data.current?.column.layoutId,
             };
           }
           return block;
         });
-        return arrayMove(newBlocks, activeIndex, activeIndex);
+
+        return newBlocks;
       });
     }
-    setActiveLayout(null);
-    setActiveBlock(null);
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (!over || active.id === over?.id) {
+      setActiveDraggable(null);
+      return;
+    }
+    const isActiveALayout = active.data.current?.type === "layout";
+    const isOverALayout = over?.data.current?.type === "layout";
+    const isLayoutOption = active.id.toString().startsWith("layout");
+
+    const isOverAColumn = over?.data.current?.type === "column";
+    // const isActiveABlock = active.data.current?.type === "block";
+    const isBlockOption = active.id.toString().startsWith("block");
+
+    if (isBlockOption && isOverALayout) {
+      // if (over.id === "content-area") {
+      unstable_batchedUpdates(() => {
+        const newLayout = createNewLayout(LAYOUT_OPTIONS[0]);
+        setLayouts((layouts) => [...layouts, newLayout]);
+
+        const newBlock = createNewBlock({
+          ...active.data.current?.block,
+          columnId: newLayout.columns[0].id,
+          layoutId: newLayout.id,
+        });
+
+        setBlocks((blocks) => [...blocks, newBlock]);
+        setSelectedElement(newBlock.id);
+      });
+      // }
+    }
+    if (isBlockOption && isOverAColumn) {
+      const newBlock = createNewBlock({
+        ...active.data.current?.block,
+        columnId: over.id.toString(),
+        layoutId: over?.data.current?.column.layoutId,
+      });
+      setBlocks((blocks) => [...blocks, newBlock]);
+      setSelectedElement(newBlock.id);
+    }
+
+    if (!isActiveALayout) {
+      setActiveDraggable(null);
+      return;
+    }
+
+    if (isLayoutOption) {
+      console.log("ADD LAYOUT");
+      addLayout(active.data.current?.layout);
+    }
+
+    if (!isLayoutOption) {
+      console.log("MOVE LAYOUT");
+      setLayouts((layouts) => {
+        const activeIndex = layouts.findIndex((layout) => layout.id === active.id);
+        const overIndex = layouts.findIndex((layout) => layout.id === over?.id);
+        return arrayMove(layouts, activeIndex, overIndex);
+      });
+    }
+
+    setActiveDraggable(null);
+  }
+
+  function handleDragCancel(event: DragCancelEvent) {
+    console.log("DRAG CANCEL");
+    setActiveDraggable(null);
     setSelectedElement(null);
   }
 
@@ -240,10 +260,11 @@ export function EmailBuilder() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
+      onDragCancel={handleDragCancel}
       sensors={sensors}
     >
       <div className="flex flex-1 overflow-hidden">
-        <ElementsSidebar />
+        <ElementsSidebar disabled={layouts.length === 0} />
         <div
           className={cn(
             "border-grey-500 mx-auto w-full transition-all",
@@ -251,11 +272,7 @@ export function EmailBuilder() {
           )}
         >
           <pre className="text-xs">
-            {JSON.stringify(
-              { activeLayout, activeBlock, selectedElement: selectedElement?.id },
-              null,
-              2,
-            )}
+            {JSON.stringify({ activeDraggable, selectedElement }, null, 2)}
           </pre>
           <DroppableContentArea className="h-full overflow-y-scroll border-2 border-dashed p-10">
             <div className="flex flex-col gap-2">
@@ -263,48 +280,49 @@ export function EmailBuilder() {
                 <EmptyState message="Drag a layout here to get started" />
               ) : (
                 <SortableContext items={layoutIds} strategy={verticalListSortingStrategy}>
-                  {layouts.map((layout, layoutIndex) => (
+                  {layouts.map((layout) => (
                     <LayoutContainer
                       key={layout.id}
-                      index={layoutIndex}
                       layout={layout}
                       blocks={blocks.filter((block) => block.layoutId === layout.id)}
-                      removeLayout={() => removeLayout(layout.id)}
-                      removeBlock={removeBlock}
-                      activeLayout={activeLayout}
-                      activeBlock={activeBlock}
-                      // activeId={activeId}
                       selectedElement={selectedElement}
                       setSelectedElement={setSelectedElement}
+                      removeLayout={() => removeLayout(layout.id)}
+                      removeBlock={removeBlock}
                     />
                   ))}
                 </SortableContext>
               )}
             </div>
           </DroppableContentArea>
-          {/* {createPortal(
+        </div>
+
+        <Settings selectedElement={selectedStuff} updateElement={() => {}} />
+        {/* {createPortal(
             <DragOverlay>
-              {activeLayout && (
-                <LayoutContainer
-                  layout={layouts.find((layout) => layout.id === activeLayout)}
-                  index={layouts.findIndex((layout) => layout.id === activeLayout)}
-                  removeLayout={() => removeLayout(activeLayout)}
-                  activeLayout={activeLayout}
-                  activeColumn={activeColumnId}
-                  activeBlock={activeBlock}
-                  setActiveLayout={setActiveLayout}
-                  setActiveColumn={setActiveColumnId}
-                  setActiveBlock={setActiveBlock}
-                />
+              {activeDraggable?.search("layout") && (
+                <div className="z-50 rounded-md border-2 border-dashed bg-cyan-200 p-2">
+                  <ElementPreview element={layouts.find((layout) => layout.id === activeDraggable)} />
+                </div> 
+              )}
+              {activeDraggable && (
+                <div className="z-50 rounded-md border-2 border-dashed bg-cyan-200 p-2">
+                  <ElementPreview element={blocks.find((block) => block.id === activeDraggable)} />
+                </div>
               )}
             </DragOverlay>,
             document.body,
           )} */}
-        </div>
-
-        <Settings selectedElement={layouts[0]} updateElement={() => {}} />
       </div>
-      <Button onClick={() => setShowPre(!showPre)}>Toggle Pre</Button>
+      <Button
+        className="absolute bottom-0 right-0 z-50"
+        onClick={(e) => {
+          // e.preventDefault();
+          setShowPre(!showPre);
+        }}
+      >
+        Toggle Pre
+      </Button>
 
       <div className="bg-grey-100 absolute bottom-0 right-0 top-0">
         <ScrollArea
@@ -312,11 +330,7 @@ export function EmailBuilder() {
           style={{ display: showPre ? "block" : "none" }}
         >
           <pre className="text-xs">
-            {JSON.stringify(
-              { activeLayout, activeBlock, selectedElement: selectedElement },
-              null,
-              2,
-            )}
+            {JSON.stringify({ activeDraggable, selectedElement }, null, 2)}
           </pre>
           <pre className="text-xs">{JSON.stringify({ layouts, blocks }, null, 2)}</pre>
         </ScrollArea>

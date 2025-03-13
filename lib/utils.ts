@@ -118,3 +118,5 @@ function runPprintExamples(): void {
   // %c - Custom CSS Styling
   console.log("%cStyled Text!", "color: blue; font-size: 20px; font-weight: bold;");
 }
+
+export const getElementType = (str: string) => str.match(/(.*?)-?(block|layout)-?(.*)?/);

@@ -1,23 +1,21 @@
 "use client";
 
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { deleteTemplate, updateTemplate } from "@/app/(main)/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useViewStore } from "@/stores/view";
 import {
+  ArrowLeftIcon,
   Code2Icon,
   MonitorIcon,
   SaveIcon,
   SmartphoneIcon,
-  TabletIcon,
-  ArrowLeftIcon,
   TrashIcon,
 } from "lucide-react";
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { deleteTemplate, updateTemplate } from "@/app/(main)/actions";
 import { useParams } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { useViewStore } from "@/stores/view";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { useState } from "react";
 
 export function TopBar() {
   const { view, setView } = useViewStore();

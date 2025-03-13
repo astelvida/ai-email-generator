@@ -54,26 +54,54 @@ export interface ImageElementStyle extends ElementStyle {
   padding?: string;
 }
 
-export interface BlockType {
-  id?: string;
-  type: "button" | "text" | "image" | "divider" | "icons" | "social-icons";
-  style?: React.CSSProperties;
-  text?: string;
-  content?: string;
+export type BlockIcon = {
+  name?: string;
+  icon: React.ReactNode;
   url?: string;
-  imageUrl?: string;
-  alt?: string;
-  label?: string;
-  icon?: LucideIcon;
-  brand?: "facebook" | "instagram" | "tiktok" | "linkedin";
+};
+
+export interface BlockElement {
+  id: string;
+  layoutId: string;
+  columnId: string;
+
+  label: string;
+  type:
+    | "heading"
+    | "paragraph"
+    | "button"
+    | "list"
+    | "image"
+    | "video"
+    | "divider"
+    | "icons"
+    | "social-icons"
+    | "html";
+  style: React.CSSProperties;
+  extraAttributes?: {
+    text?: string;
+    content?: string[];
+    listType?: "ordered" | "unordered";
+    linkTo?: "Web page" | "Email" | "Phone" | "Text" | "Social" | "Download" | "None";
+    url?: string;
+    imageUrl?: string;
+    alt?: string;
+    icon?: BlockIcon;
+    icons?: BlockIcon[];
+    brand?: "facebook" | "instagram" | "tiktok" | "linkedin";
+    isTransparent?: boolean;
+    videoUrl?: string;
+    html?: string;
+  };
+  icon?: React.ReactElement | LucideIcon;
 }
 
 export interface ColumnType {
   id: string;
-  gridColumn: number;
   type: "column";
-  // style?: React.CSSProperties;
-  // blocks: BlockType[];
+  gridColumn: number;
+  layoutId: string;
+  index: number;
 }
 
 // Types for Layout.tsx

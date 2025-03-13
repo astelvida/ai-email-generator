@@ -118,11 +118,8 @@ export const blocks = [
 export const initialState = {
   blocks,
   layoutSections,
-  activeId: null,
-  activeDragData: null,
-  activeBlock: null,
+  activeDraggable: null,
   selectedElement: null,
-  activeLayoutSectionId: null,
 };
 const blocks2 = [
   {

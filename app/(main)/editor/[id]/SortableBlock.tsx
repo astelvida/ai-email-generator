@@ -6,21 +6,19 @@ import type React from "react";
 interface SortableBlockProps {
   id: string;
   children: React.ReactNode;
-  data?: Record<string, unknown> | undefined;
+  data: Record<string, unknown>;
   className?: string;
   onClick?: () => void;
 }
 
-export type CustomSortableItemType = "layout" | "column" | "block";
-
-export function SortableBlock({ id, data, children, className }: SortableBlockProps) {
+export function SortableBlock({ id, children, data, className, onClick }: SortableBlockProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
     useSortable({
       id,
       data: {
+        type: "block",
         block: data,
         blockType: data?.type,
-        type: "block",
       },
     });
 
@@ -34,6 +32,7 @@ export function SortableBlock({ id, data, children, className }: SortableBlockPr
   return (
     <div
       ref={setNodeRef}
+      onClick={onClick}
       {...attributes}
       {...listeners}
       style={style}

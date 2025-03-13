@@ -44,5 +44,6 @@ next-env.d.ts
 node_modules
 .pnpm-lock.yaml
 
-
-./_data
+# JSON data
+/_data
+_data

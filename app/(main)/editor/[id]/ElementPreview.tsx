@@ -1,8 +1,10 @@
+"use client";
+
+import { FacebookLogo, GithubLogo, InstagramLogo, TikTokLogo } from "@/components/SocialIcons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Element } from "./types";
 
-export function ElementPreview({ element }: { element: Element }) {
+export function ElementPreview({ element }: { element: any }) {
   const style = element.style || {};
 
   // Common inline styles based on element.style
@@ -18,21 +20,31 @@ export function ElementPreview({ element }: { element: Element }) {
     height: style.height,
   };
 
+  console.log("element", element);
+
   switch (element.type) {
     case "button":
       return (
         <div className="rounded-md bg-background p-2">
-          <Button className="w-full" style={commonStyles}>
-            {element.content}
+          <Button className="w-full" style={{ ...commonStyles, ...element.style }}>
+            {element.extraAttributes?.text || "A Button"}
           </Button>
         </div>
       );
     case "text":
       return (
         <div className="rounded-md bg-background p-2">
-          <p style={commonStyles} className="text-muted-foreground">
-            {element.content}
+          <p style={{ ...commonStyles, ...element.style }} className="text-muted-foreground">
+            {element.extraAttributes?.text || "A Text"}
           </p>
+        </div>
+      );
+    case "title":
+      return (
+        <div className="rounded-md bg-background p-2">
+          <h1 style={{ ...commonStyles, ...element.style }} className="text-muted-foreground">
+            {element.extraAttributes?.text || "A Title"}
+          </h1>
         </div>
       );
     case "image":
@@ -41,20 +53,9 @@ export function ElementPreview({ element }: { element: Element }) {
           className={cn(
             "flex aspect-video items-center justify-center rounded-lg bg-background bg-muted p-2",
           )}
-          style={commonStyles}
+          style={{ ...commonStyles, ...element.style }}
         >
           <span className="text-muted-foreground">Image Placeholder</span>
-        </div>
-      );
-    case "logo":
-      return (
-        <div
-          className={cn(
-            "flex h-12 items-center justify-center rounded-lg bg-background bg-muted p-2",
-          )}
-          style={commonStyles}
-        >
-          <span className="text-muted-foreground">Logo Placeholder</span>
         </div>
       );
     case "divider":
@@ -70,14 +71,14 @@ export function ElementPreview({ element }: { element: Element }) {
           />
         </div>
       );
-    case "social":
+    case "icons":
       return (
         <div className="rounded-md bg-background p-2">
           <div className="flex justify-center gap-2">
-            {["Twitter", "Facebook", "Instagram"].map((social) => (
+            {[TikTokLogo, FacebookLogo, InstagramLogo, GithubLogo].map((SocialIcon, index) => (
               <Button
-                key={social}
-                variant="outline"
+                key={SocialIcon.name || `social-icon-${index}`}
+                variant="ghost"
                 size="icon"
                 style={{
                   backgroundColor: style.backgroundColor,
@@ -85,7 +86,8 @@ export function ElementPreview({ element }: { element: Element }) {
                   borderRadius: style.borderRadius ? `${style.borderRadius}px` : undefined,
                 }}
               >
-                {social[0]}
+                <SocialIcon />
+                <span className="sr-only">{SocialIcon.name || "Social Icon"}</span>
               </Button>
             ))}
           </div>
